@@ -6,11 +6,15 @@ import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.*;
 
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.event.KeyListener;
 import java.util.ConcurrentModificationException;
 
 import javax.swing.JFrame;
+
+import platformer.Main;
 import platformer.Entities.Entity;
+import platformer.Entities.Player;
 
 public class CoreFrame extends JFrame implements KeyListener
 {
@@ -35,6 +39,8 @@ public class CoreFrame extends JFrame implements KeyListener
         this.addKeyListener(this);
         // Activate Thread //
         this.thread = new GuiThread(this);
+        // Add Reference //
+        Main.CoreFrames.put(display, this);
         
     }
     // Inputs //
@@ -87,7 +93,19 @@ public class CoreFrame extends JFrame implements KeyListener
                     for (Entity entity : Entity.entityList)
                     {
                         try {
+                            // Update Entity //
                             entity.update();
+                            // Convert //
+                            try
+                            {
+                                Player player = Player.class.cast(entity);
+                                // Update Tools //
+                                if (player != null)
+                                    player.equippedTool.update((Graphics2D)coreFrame.getGraphics());
+                            }
+
+                            catch (Exception _) {}
+                            // Delay //
                             this.sleep(1000/144);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block

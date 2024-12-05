@@ -1,13 +1,18 @@
 package platformer.Gui;
 
+import static platformer.Main.Cameras;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
 
 import javax.swing.JPanel;
 
 
 import platformer.Entities.Platform;
+import platformer.Main;
+import platformer.Entities.Camera;
 import platformer.Entities.Entity;
 
 public class DrawCanvas extends JPanel
@@ -26,9 +31,14 @@ public class DrawCanvas extends JPanel
     { 
         // Initialize //
         Graphics2D graphics = (Graphics2D)_graphics;
+        // Display //
+        GraphicsDevice display = coreFrame.display;
+        // Camera //
+        Camera camera = Cameras.get(display);
         // Set Background //
         //graphics.setColor(Color black);
         // Render Entities //
-        Entity.renderAll(graphics);
+        camera.update();
+        //Entity.renderAll(graphics);
     }
 }

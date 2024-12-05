@@ -13,9 +13,11 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.awt.geom.Point2D;
 
+import platformer.Entities.Camera;
 import platformer.Entities.Platform;
 import platformer.Entities.Player;
 import platformer.Gui.CoreFrame;
+import platformer.Tools.Tool;
 /**
  *
  * @author: Nicholas Ranin
@@ -30,6 +32,7 @@ public class Main
     public static final GraphicsEnvironment GE = GraphicsEnvironment.getLocalGraphicsEnvironment();
     public static final GraphicsDevice[] displays = GE.getScreenDevices();
     public static final Dictionary<GraphicsDevice, CoreFrame> CoreFrames = new Hashtable<>();
+    public static final Dictionary<GraphicsDevice, Camera> Cameras = new Hashtable<>();
     /**
      * @param args the command line arguments
      */
@@ -40,12 +43,15 @@ public class Main
 
         for (GraphicsDevice display : displays) 
         {
+            // Initialize Gui //
             CoreFrame coreFrame = new CoreFrame(display);
-            CoreFrames.put(display, coreFrame);
+            // Initialize Player //
+            Player player = new Player(new Point2D.Double(100, 100));
+            player.equipTool(new Tool(player));
+            // Initialize Camera //
+            Camera camera = new Camera(display, player);
+            // Debug //
             System.out.println(display);
         }
-
-        Player mainPlayer = new Player(new Point2D.Double(100, 100));
-        mainPlayer.setGravityEffect(true);
     }
 }

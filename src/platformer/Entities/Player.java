@@ -4,6 +4,7 @@ package platformer.Entities;
 // Imports //
 import platformer.Entities.Entity;
 import platformer.Gui.CoreFrame;
+import platformer.Tools.Tool;
 import platformer.Main;
 import platformer.Constants.PlayerSettings;
 import java.awt.geom.Point2D;
@@ -25,49 +26,35 @@ import static platformer.Main.displays;
 // Base Class //
 public class Player extends Entity implements KeyListener {
     // Data //
+    public Tool equippedTool;
     private final Point movementAxis = new Point(0, 0);
     public final ArrayList<Integer> keysDown = new ArrayList<Integer>();
     // Constructors //
-    public Player(Point2D position)
-    {
-        super((int)position.getX(), (int)position.getY(), PlayerSettings.width, PlayerSettings.height);
-        CoreFrames.get(displays[0]).addKeyListener(this);
-    }
-
     public Player(Point2D position, Dimension2D size) {
         super(position, size);
-        enableScreenBounds(true);
+        CoreFrames.get(displays[0]).addKeyListener(this);
+    }
+    
+    public Player(Point2D position)
+    {
+        this(position, new Dimension(PlayerSettings.width, PlayerSettings.height));
     }
 
     public Player(int xPos, int yPos, int width, int height) {
         // Activate Parent Constructor //
-        super(new Point2D.Double((double) xPos, (double) yPos), (Dimension2D) new Dimension(width, height));
-        enableScreenBounds(true);
+        this(new Point2D.Double((double) xPos, (double) yPos), new Dimension(width, height));
     }
-    // Base Methods //
+    // Override Methods //
     @Override
     public void update() {
         // Data //
         Point2D velocity = this.getVelocity();
-        // Ancestor Update //
-        super.update();
         // Physics //
         updatePhysics();
         // Movemement //
         velocity.setLocation(movementAxis.getX(), velocity.getY());
-
-        for (Entity entity : entityList)
-        {
-            // Conditions //
-            if (this == entity)
-                continue;
-            if (!entity.hitBox.intersectsLine(new Line2D.Double(getPosition().getX(), getPosition().getY(), getPosition().getX() + 100, getPosition().getY())))
-                continue;    
-            // Settings //
-            System.out.println("INTERSECTING!");
-        }
     }
-    //
+    // Encapsulation //
 
     public void setPlayerClass() {
         // have options such as mage, warrior, ranger, summoner...
@@ -101,12 +88,16 @@ public class Player extends Entity implements KeyListener {
         String[] guns = {"rifle", "assultRifle", "pistol", "rayGun", "shotgun", "sniper"};
     }
 
-    // tracks and dispalys player level
+    // tracks and displays player level
     public static void rank() {
         String[] rank = {"novice", "intermediate", "experienced", "expert"};
     }
-
-    // Input //
+    // Tools //
+    public void equipTool(Tool tool)
+    {
+        equippedTool = tool;
+    }
+    // Abstract Methods //
     @Override
     public void keyTyped(KeyEvent e) {
         
