@@ -38,7 +38,7 @@ public class DrawCanvas extends JPanel
         // Set Background //
         //graphics.setColor(Color black);
         // Render Entities //
-        camera.update();
+        camera.render(graphics);
         //Entity.renderAll(graphics);
     }
 }

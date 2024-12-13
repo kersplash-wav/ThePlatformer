@@ -10,6 +10,7 @@ import platformer.Constants.PlayerSettings;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import static platformer.Entities.Platform.platformList;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -24,25 +25,53 @@ import static platformer.Main.CoreFrames;
 import static platformer.Main.displays;
 
 // Base Class //
-public class Player extends Entity implements KeyListener {
+public class PlayerCharacter extends Entity implements KeyListener {
     // Data //
     public Tool equippedTool;
     private final Point movementAxis = new Point(0, 0);
     public final ArrayList<Integer> keysDown = new ArrayList<Integer>();
     // Constructors //
-    public Player(Point2D position, Dimension2D size) {
+    public PlayerCharacter(Point2D position, Dimension2D size) {
         super(position, size);
         CoreFrames.get(displays[0]).addKeyListener(this);
     }
     
-    public Player(Point2D position)
+    public PlayerCharacter(Point2D position)
     {
         this(position, new Dimension(PlayerSettings.width, PlayerSettings.height));
     }
 
-    public Player(int xPos, int yPos, int width, int height) {
+    public PlayerCharacter(int xPos, int yPos, int width, int height) {
         // Activate Parent Constructor //
         this(new Point2D.Double((double) xPos, (double) yPos), new Dimension(width, height));
+    }
+    // Base Methods //
+    public boolean isGrounded()
+    {
+        // Character Data //
+        Dimension2D playerSize = getSize();
+        Point2D underPlayer = new Point2D.Double(hitBox.getCenterX(), hitBox.getCenterY() + playerSize.getHeight() / 2);
+        // Check through every platform //
+        for (Platform platform : platformList)
+        {
+            // Conditions //
+            if (platform.hitBox.contains(underPlayer))
+            {
+                // Debug //
+                /*
+                System.out.println("Detecting!");
+                setPosition(getPosition().getX(), platform.getPosition().getY() - playerSize.getHeight());
+                */
+                // Experimental // 
+                Point2D bounce = platform.getIntersectEscape(underPlayer);
+                System.out.println(bounce.getY());
+                setVelocity(getVelocity().getX()+bounce.getX(), bounce.getY());
+                // Success //
+                return true;
+            }
+            // Fail //
+        }
+        return false;
     }
     // Override Methods //
     @Override
@@ -51,6 +80,11 @@ public class Player extends Entity implements KeyListener {
         Point2D velocity = this.getVelocity();
         // Physics //
         updatePhysics();
+        // Ground //
+        if (isGrounded())
+        {
+            System.out.println("GROUNDED!");
+        }
         // Movemement //
         velocity.setLocation(movementAxis.getX(), velocity.getY());
     }

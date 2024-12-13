@@ -12,12 +12,14 @@ import java.awt.event.KeyListener;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.awt.geom.Point2D;
+import java.awt.Color;
 
 import platformer.Entities.Camera;
 import platformer.Entities.Platform;
-import platformer.Entities.Player;
+import platformer.Entities.PlayerCharacter;
 import platformer.Gui.CoreFrame;
 import platformer.Tools.Tool;
+import platformer.Constants.*;
 /**
  *
  * @author: Nicholas Ranin
@@ -39,6 +41,9 @@ public class Main
     public static void main(String[] args) 
     {
         new Platform(500, 500, 500, 100);
+        Platform platform2 = new Platform(-500, 500, 500, 100);
+        platform2.setColour(Color.GREEN);
+        platform2.setBounce(Constants.Platform.RubberPlatform.bounce);
         // TODO code application logic here
 
         for (GraphicsDevice display : displays) 
@@ -46,10 +51,13 @@ public class Main
             // Initialize Gui //
             CoreFrame coreFrame = new CoreFrame(display);
             // Initialize Player //
-            Player player = new Player(new Point2D.Double(100, 100));
+            PlayerCharacter player = new PlayerCharacter(new Point2D.Double(100, 100));
             player.equipTool(new Tool(player));
+            player.setGravityEffect(true);
             // Initialize Camera //
             Camera camera = new Camera(display, player);
+            // Initialize Textures (idk if this does anything)
+            // Texture texture = new Texture();
             // Debug //
             System.out.println(display);
         }

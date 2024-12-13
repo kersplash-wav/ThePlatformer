@@ -8,15 +8,14 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Color;
 import java.awt.Dimension;
-
+import platformer.Constants;
 // Class //
 public class Platform extends Entity {
     // Public Data //
     public static final ArrayList<Platform> platformList = new ArrayList<Platform>();
     // Private Data //
-    private double friction = 1;
-    private double bounce = 0;
-
+    private double friction = Constants.Platform.StandardPlatform.friction;
+    private double bounce = Constants.Platform.StandardPlatform.bounce;
     // Constructor //
     
     /**
@@ -89,29 +88,29 @@ public class Platform extends Entity {
         return this.hitBox.intersects(entity.hitBox);
     }
 
+    public boolean isIntersecting(Point2D point){
+        return this.hitBox.contains(point);
+    }
+
     /**
      * If an entity is intersecting this platform, get the direction they must travel to leave the platform.
      * @param entity the entity to test
      * @return the direction the entity must travel to escape the bounds of this platform
      */
-    public Point2D getIntersectEscape(Entity entity) {
-
-        if(!isIntersecting(entity))
+    public Point2D getIntersectEscape(Point2D point) {
+        // Condtions //
+        if(!isIntersecting(point))
             return new Point2D.Double(0,0);
-
-        double xOffset = 0;
-        double yOffset = 0;
-
-        if (this.hitBox.getMinX() < entity.hitBox.getMaxX())
-            xOffset = -1;
-        if (this.hitBox.getMaxX() > entity.hitBox.getMinX())
-            xOffset = 1;
-        if (this.hitBox.getMinY() < entity.hitBox.getMaxY())
-            yOffset = -1;
-        if (this.hitBox.getMaxY() > entity.hitBox.getMinY())
+        // Data //
+        double yOffset = point.getY()-hitBox.getCenterY();
+        // Checks //
+        if(yOffset == 0)
             yOffset = 1;
+        // Settings //
 
-        return new Point2D.Double(xOffset, yOffset);
+        yOffset = (yOffset/Math.abs(yOffset))*Constants.WorldSettings.worldGravity*getBounce();
+        // Success //
+        return new Point2D.Double(0, yOffset);
     }
 
     @Override

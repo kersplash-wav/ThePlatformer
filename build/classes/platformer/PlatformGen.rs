@@ -1,2 +1,2 @@
-platformer.PlatformGen
+
 platformer.MyPanel

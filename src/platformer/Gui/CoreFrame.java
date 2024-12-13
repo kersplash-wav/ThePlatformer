@@ -14,7 +14,8 @@ import javax.swing.JFrame;
 
 import platformer.Main;
 import platformer.Entities.Entity;
-import platformer.Entities.Player;
+import platformer.Entities.PlayerCharacter;
+import static platformer.Main.Cameras;
 
 public class CoreFrame extends JFrame implements KeyListener
 {
@@ -56,13 +57,13 @@ public class CoreFrame extends JFrame implements KeyListener
 
     @Override
     public void keyReleased(KeyEvent keyData) {
-                switch (keyData.getKeyCode())
-                {
-                    case VK_ESCAPE:
-                        System.exit(0);
-                    default:
-                        break;
-                }
+        switch (keyData.getKeyCode())
+        {
+            case VK_ESCAPE:
+                System.exit(0);
+            default:
+                break;
+        }
     }
     // Subclass //
     public class GuiThread extends Thread
@@ -72,7 +73,6 @@ public class CoreFrame extends JFrame implements KeyListener
         // Constructor //
         public GuiThread(CoreFrame coreFrame)
         {
-            System.out.println("BEGIN THREAD!");
             // Attach Parent //
             this.coreFrame = coreFrame;
             // Begin Thread //
@@ -82,7 +82,6 @@ public class CoreFrame extends JFrame implements KeyListener
         @Override
         public void run()
         {
-            System.out.println("Running!");
             while (true) 
             {
                 // Checks //
@@ -101,7 +100,7 @@ public class CoreFrame extends JFrame implements KeyListener
                                 Player player = Player.class.cast(entity);
                                 // Update Tools //
                                 if (player != null)
-                                    player.equippedTool.update((Graphics2D)coreFrame.getGraphics());
+                                    player.equippedTool.update((Graphics2D)coreFrame.getGraphics(), Cameras.get(display));
                             }
 
                             catch (Exception _) {}

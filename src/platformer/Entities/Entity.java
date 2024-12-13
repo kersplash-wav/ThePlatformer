@@ -83,7 +83,7 @@ public abstract class Entity extends Object
         if (!affectedByGravity)
             return;
         // Settings //
-        velocity.setLocation(velocity.getX() + worldGravity.getX(), velocity.getY() + worldGravity.getY());
+        velocity.setLocation(velocity.getX(), velocity.getY() + worldGravity);
     }
     // Base Methods //
     /**
@@ -270,22 +270,26 @@ public abstract class Entity extends Object
      * @param graphics the window to render this object to
      * @param position the position of the camera tied to this window
      */
-    public void render(Graphics2D graphics, Point2D position)
+    public void render(Graphics2D graphics, Camera camera)
     {
         update();
         Point2D thisPosition = this.getPosition();
         Dimension2D size = this.getSize();
         // Extract Data //
-        int xPos = (int)(thisPosition.getX() - position.getX());
-        int yPos = (int)(thisPosition.getY() - position.getY());
+        //int xPos = (int)(thisPosition.getX() - position.getX());
+        //int yPos = (int)(thisPosition.getY() - position.getY());
+        Point2D localPosition = camera.toLocal(thisPosition);
+
+        int xPos = (int)localPosition.getX();
+        int yPos = (int)localPosition.getY();
 
         int width = (int)size.getWidth();
         int height = (int)size.getHeight();
         // Settings //
         graphics.setColor(getColour());
-        graphics.fillRect(xPos - width / 2, yPos + height / 2, width, height);
+        graphics.fillRect(xPos, yPos, width, height);
         graphics.setColor(Color.black);
-        graphics.drawRect(xPos - width / 2, yPos + height / 2, width, height);
+        graphics.drawRect(xPos, yPos, width, height);
     }
 
     /**
@@ -300,11 +304,11 @@ public abstract class Entity extends Object
         }
     }
 
-    public static void renderAll(Graphics2D graphics, Point2D position)
+    public static void renderAll(Graphics2D graphics, Camera camera)
     {
         for (Entity entity : entityList)
         {
-            entity.render(graphics, position);
+            entity.render(graphics, camera);
         }
     }
 }

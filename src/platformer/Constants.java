@@ -5,21 +5,25 @@ import java.awt.geom.Point2D;
 public final class Constants {
 
     public final class WorldSettings {
-        public static Point2D worldGravity = new Point2D.Double(0, 0.1);
+        public static double worldGravity = 0.1;
     }
 
     public final class PlayerSettings {
         public static final int width = 100;
-        public static final int height = 300;
+        public static final int height = 150;
         
     }
 
     // Settings for all platform types
     public final class Platform { 
+
+        //friction (F) = coefficient of friction (μ) * normal force (N)
+        // F = μN
+
         // Default platform
         public final class StandardPlatform {
-            double friction = 1;
-            double bounce = 1;
+            public static final double friction = 1;
+            public static final double bounce = 5;
         }
         // Slippery ice platform
         public final class IcePlatform {
@@ -34,9 +38,8 @@ public final class Constants {
         }
         // Rubber platform
         public final class RubberPlatform{
-            double friction = 2;
-            double bounce = 5;
-            
+            public final static double friction = 2;
+            public final static double bounce = 20;
         }
     }
 }
