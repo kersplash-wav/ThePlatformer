@@ -4,9 +4,7 @@ package platformer.Entities;
 import java.awt.geom.Point2D;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Color;
 import java.awt.Dimension;
 import platformer.Constants;
 // Class //

@@ -17,15 +17,14 @@ import platformer.Entities.Entity;
 import platformer.Entities.PlayerCharacter;
 import static platformer.Main.Cameras;
 
-public class CoreFrame extends JFrame implements KeyListener
-{
+public class CoreFrame extends JFrame implements KeyListener {
     // Data //
     public final DrawCanvas drawCanvas;
     public final GraphicsDevice display;
     public final GuiThread thread;
+
     // Constructor //
-    public CoreFrame(GraphicsDevice display)
-    {
+    public CoreFrame(GraphicsDevice display) {
         // Init //
         super(display.getDefaultConfiguration());
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -42,78 +41,75 @@ public class CoreFrame extends JFrame implements KeyListener
         this.thread = new GuiThread(this);
         // Add Reference //
         Main.CoreFrames.put(display, this);
-        
+
     }
+
     // Inputs //
     @Override
     public void keyTyped(KeyEvent ke) {
-        
+
     }
 
     @Override
     public void keyPressed(KeyEvent ke) {
-        
+
     }
 
     @Override
     public void keyReleased(KeyEvent keyData) {
-        switch (keyData.getKeyCode())
-        {
+        switch (keyData.getKeyCode()) {
             case VK_ESCAPE:
                 System.exit(0);
             default:
                 break;
         }
     }
+
     // Subclass //
-    public class GuiThread extends Thread
-    {
+    public class GuiThread extends Thread {
         // Data //
         public final CoreFrame coreFrame;
+
         // Constructor //
-        public GuiThread(CoreFrame coreFrame)
-        {
+        public GuiThread(CoreFrame coreFrame) {
             // Attach Parent //
             this.coreFrame = coreFrame;
             // Begin Thread //
             this.start();
         }
+
         // Override Methods //
         @Override
-        public void run()
-        {
-            while (true) 
-            {
+        public void run() {
+            while (true) {
                 // Checks //
                 coreFrame.repaint();
 
-                try 
-                {
-                    for (Entity entity : Entity.entityList)
-                    {
+                try {
+                    for (Entity entity : Entity.entityList) {
                         try {
                             // Update Entity //
                             entity.update();
                             // Convert //
-                            try
-                            {
+                            try {
                                 Player player = Player.class.cast(entity);
                                 // Update Tools //
                                 if (player != null)
-                                    player.equippedTool.update((Graphics2D)coreFrame.getGraphics(), Cameras.get(display));
+                                    player.equippedTool.update((Graphics2D) coreFrame.getGraphics(),
+                                            Cameras.get(display));
                             }
 
-                            catch (Exception _) {}
+                            catch (Exception _) {
+                            }
                             // Delay //
-                            this.sleep(1000/144);
+                            this.sleep(1000 / 144);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
-                } catch (ConcurrentModificationException e)
-                {
-                    
+                } catch (ConcurrentModificationException e) {
+
                 }
             }
         }

@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 public final class Constants {
 
     public final class WorldSettings {
-        public static double worldGravity = 0.1;
+        public static final double worldGravity = 0.1;
     }
 
     public final class PlayerSettings {
@@ -22,6 +22,7 @@ public final class Constants {
 
         // Default platform
         public final class StandardPlatform {
+            
             public static final double friction = 1;
             public static final double bounce = 5;
         }
