@@ -7,24 +7,14 @@
 
 package platformer;
 
-import platformer.Controller.*;
 import javax.swing.JOptionPane;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.KeyEvent;
-import static java.awt.event.KeyEvent.*;
-import java.awt.event.KeyListener;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.awt.geom.Point2D;
 import java.awt.Color;
 
 import platformer.Entities.Platform;
-import platformer.Entities.PlayerCharacter;
-import platformer.Gui.Camera;
 import platformer.Gui.CoreFrame;
-import platformer.Tools.Tool;
-import platformer.Constants.*;
 
 /**
  *
@@ -38,53 +28,61 @@ public class Main {
     // Graphics //
     public static final GraphicsEnvironment GE = GraphicsEnvironment.getLocalGraphicsEnvironment();
     public static final GraphicsDevice[] displays = GE.getScreenDevices();
-    public static final Dictionary<GraphicsDevice, CoreFrame> CoreFrames = new Hashtable<>();
-    public static final Dictionary<GraphicsDevice, Camera> Cameras = new Hashtable<>();
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) 
-    {
-        /* Create an event object for the underlying plugin to populate */
-          Event event = new Event();
+    public static void main(String[] args) {
 
-        /* Get the available controllers */
-        Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
-        for (int i = 0; i < controllers.length; i++) {
-            System.out.println("Controller Found!");
-            /* Remember to poll each one */
-            controllers[i].poll();
+        // /* Create an event object for the underlying plugin to populate */
+        // Event event = new Event();
 
-            /* Get the controllers event queue */
-            EventQueue queue = controllers[i].getEventQueue();
+        // /* Get the available controllers */
+        // Controller[] controllers =
+        // ControllerEnvironment.getDefaultEnvironment().getControllers();
+        // for (int i = 0; i < controllers.length; i++) {
+        // System.out.println("Controller Found!");
+        // /* Remember to poll each one */
+        // controllers[i].poll();
 
-            /* For each object in the queue */
-            while (queue.getNextEvent(event)) {
-                /* Get event component */
-                Component comp = event.getComponent();
+        // /* Get the controllers event queue */
+        // EventQueue queue = controllers[i].getEventQueue();
 
-                /* Process event (your awesome code) */
-                
-            }
-        }
-        new Platform(500, 500, 500, 100);
+        // /* For each object in the queue */
+        // while (queue.getNextEvent(event)) {
+        // /* Get event component */
+        // Component comp = event.getComponent();
+
+        // /* Process event (your awesome code) */
+
+        // }
+        // }
+        Platform platform1 = new Platform(500, 500, 500, 100);
         Platform platform2 = new Platform(-500, 500, 500, 100);
         platform2.setColour(Color.GREEN);
         platform2.setBounce(Constants.Platform.RubberPlatform.bounce);
         // TODO code application logic here
 
-        for (GraphicsDevice display : displays) 
-        {
-            // Initialize Gui //
+        for (GraphicsDevice display : displays) {
             CoreFrame coreFrame = new CoreFrame(display);
+            int count;
+            // Initialize Option Pane //
+            while (true) {
+                try {
+                    String userInput = JOptionPane.showInputDialog(coreFrame,
+                            "How many players on this screen (Max 4)?");
+                    count = Integer.parseInt(userInput);
+                    if (count > 4 || count < 1)
+                        continue;
+                } catch (Exception e) {
+                    continue;
+                }
+                break;
+            }
             // Initialize Player //
-            Player playerOne = new Player(1,display, this)
-            player.setGravityEffect(true);
-            // Initialize Camera //
-            Camera camera = new Camera(display, player);
-            // Initialize Textures (idk if this does anything)
-            // Texture texture = new Texture();
+            for (int i = 0; i < count; i++) {
+                Player player = new Player(display, new Point2D.Double(), display.getFullScreenWindow().getSize());
+            }
             // Debug //
             System.out.println(display);
         }

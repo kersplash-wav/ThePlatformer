@@ -10,6 +10,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import platformer.Constants;
 import platformer.Gui.Camera;
 
 // Graphics Imports //
@@ -311,5 +312,25 @@ public abstract class Entity extends Object {
         for (Entity entity : entityList) {
             entity.render(graphics, camera);
         }
+    }
+
+    public Point2D getIntersectEscape(Point2D point) {
+        // Condtions //
+        if (!isIntersecting(point))
+            return new Point2D.Double(0, 0);
+        // Data //
+        double yOffset = point.getY() - hitBox.getCenterY();
+        // Checks //
+        if (yOffset == 0)
+            yOffset = 1;
+        // Settings //
+
+        yOffset = (yOffset / Math.abs(yOffset)) * Constants.WorldSettings.worldGravity;
+        // Success //
+        return new Point2D.Double(0, yOffset);
+    }
+
+    public boolean isIntersecting(Point2D point) {
+        return this.hitBox.contains(point);
     }
 }
