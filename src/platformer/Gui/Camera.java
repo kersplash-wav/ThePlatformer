@@ -3,6 +3,7 @@ package platformer.Gui;
 import java.awt.geom.Point2D;
 import javax.swing.JPanel;
 import java.awt.Graphics;
+import java.awt.Point;
 
 public class Camera extends JPanel {
     // Instance Data //
@@ -29,15 +30,15 @@ public class Camera extends JPanel {
         return position;
     }
 
+    public Point2D getOffset() {
+        return new Point2D.Double(-getPosition().getX(), -getPosition().getY());
+    }
+
     public CoreFrame getFrame() {
         return frame;
     }
 
     // Conversion Methods //
-    public Point2D toLocal(Point2D globalPoint) {
-        return new Point2D.Double(globalPoint.getX() - position.getX(), globalPoint.getY() - position.getY());
-    }
-
     // Override Methods //
     @Override
     public void paintComponent(Graphics graphics) {

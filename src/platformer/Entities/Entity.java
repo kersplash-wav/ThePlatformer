@@ -11,10 +11,9 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import platformer.Constants;
-import platformer.Gui.Camera;
 
 // Graphics Imports //
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 // Universal Imports //
 import static platformer.Constants.WorldSettings.*;
@@ -243,16 +242,20 @@ public abstract class Entity extends Object {
         translate(velocity);
     }
 
+    public void translateVelocity(Point2D point) {
+        velocity.setLocation(velocity.getX() + point.getX(), velocity.getY() + point.getY());
+    }
+
     /**
      * Render this object.
      * 
      * @param graphics the window to render this object to
      */
-    public void render(Graphics2D graphics) {
+    public void render(Graphics graphics) {
         render(graphics, new Point2D.Double());
     }
 
-    public void render(Graphics2D graphics, Point2D offset) {
+    public void render(Graphics graphics, Point2D offset) {
         update();
         // Data Source //
         Point2D position = this.getPosition();
@@ -271,46 +274,13 @@ public abstract class Entity extends Object {
     }
 
     /**
-     * Render this object.
-     * 
-     * @param graphics the window to render this object to
-     * @param position the position of the camera tied to this window
-     */
-    public void render(Graphics2D graphics, Camera camera) {
-        update();
-        Point2D thisPosition = this.getPosition();
-        Dimension2D size = this.getSize();
-        // Extract Data //
-        // int xPos = (int)(thisPosition.getX() - position.getX());
-        // int yPos = (int)(thisPosition.getY() - position.getY());
-        Point2D localPosition = camera.toLocal(thisPosition);
-
-        int xPos = (int) localPosition.getX();
-        int yPos = (int) localPosition.getY();
-
-        int width = (int) size.getWidth();
-        int height = (int) size.getHeight();
-        // Settings //
-        graphics.setColor(getColour());
-        graphics.fillRect(xPos, yPos, width, height);
-        graphics.setColor(Color.black);
-        graphics.drawRect(xPos, yPos, width, height);
-    }
-
-    /**
      * Render all entities to this window
      * 
      * @param graphics the window to render all entites to
      */
-    public static void renderAll(Graphics2D graphics) {
+    public static void renderAll(Graphics graphics, Point2D offset) {
         for (Entity entity : entityList) {
-            entity.render(graphics);
-        }
-    }
-
-    public static void renderAll(Graphics2D graphics, Camera camera) {
-        for (Entity entity : entityList) {
-            entity.render(graphics, camera);
+            entity.render(graphics, offset);
         }
     }
 

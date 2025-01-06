@@ -39,9 +39,9 @@ public class CoreFrame extends JFrame {
         @Override
         public void run() {
             while (true) {
-                coreFrame.repaint();
                 try {
                     Thread.sleep(1000 / 144);
+                    coreFrame.repaint();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
