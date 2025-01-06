@@ -2,18 +2,12 @@
 package platformer.Gui;
 
 import java.awt.GraphicsDevice;
-import java.awt.Window;
 
 import javax.swing.JFrame;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
-
 public class CoreFrame extends JFrame {
     // Data //
-    public final GraphicsDevice display;
     public final GuiThread thread;
-    public static final Dictionary<GraphicsDevice, CoreFrame> CoreFrames = new Hashtable<>();
 
     // Constructor //
     public CoreFrame(GraphicsDevice display) {
@@ -23,16 +17,9 @@ public class CoreFrame extends JFrame {
         this.setUndecorated(true);
         this.setVisible(true);
         this.frameInit();
-        // Settings //
-        this.display = display;
         // Activate Thread //
         this.thread = new GuiThread(this);
         // Add Reference //
-        CoreFrames.put(display, this);
-    }
-
-    public static CoreFrame getCoreFrame(GraphicsDevice display) {
-        return CoreFrames.get(display);
     }
 
     // Subclass //

@@ -3,64 +3,30 @@ package platformer;
 import platformer.Gui.*;
 import platformer.Entities.*;
 import platformer.Tools.*;
-import java.awt.GraphicsDevice;
 import java.awt.geom.Point2D;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.awt.geom.Rectangle2D;
 
 import java.awt.Color;
 
 public class Player {
-    // Static Data //
-    public static final ArrayList<Player> playerlist = new ArrayList<>();
     // Instance Data //
     Graphics2D graphics;
-
     PlayerCharacter character;
+    CoreFrame coreFrame;
     Camera camera;
-
-    GraphicsDevice viewDisplay;
-    Point2D viewLocation;
-    Dimension viewSize;
-
-    int playerID;
     Tool equipedTool;
-
-    // Constructor //
-    private Player() {
-        this.playerID = playerlist.size();
-        playerlist.add(this);
-    }
 
     /**
      * Creates a player
-     * 
-     * @param playerID     identifying number of the player
-     * @param viewDisplay  the display device of this players view
-     * @param viewLocation the location this players view
-     * @param viewSize     the size of this players view
      */
-    public Player(GraphicsDevice viewDisplay, Point2D viewLocation, Dimension viewSize) {
-        // Constructor Chaining //
-        this();
-        // Initialize Data //
-        this.viewDisplay = viewDisplay;
-        this.viewLocation = viewLocation;
-        this.viewSize = viewSize;
+    public Player() {
         // Initialize Character //
         character = new PlayerCharacter();
         character.setGravityEffect(true);
         character.setColour(Color.GRAY);
-        // Initialize Camera //
-        camera = new Camera(CoreFrame.getCoreFrame(viewDisplay), viewSize);
         // Get Gui Renderer //
         graphics = (Graphics2D) camera.getGraphics();
-    }
-
-    public static Player getPlayer(int playerID) {
-        return playerlist.get(playerID);
     }
 
     public void render() {
@@ -105,4 +71,5 @@ public class Player {
         }
         return false;
     }
+
 }
