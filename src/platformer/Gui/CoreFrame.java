@@ -2,7 +2,7 @@
 package platformer.Gui;
 
 import java.awt.GraphicsDevice;
-
+import java.awt.Graphics;
 import javax.swing.JFrame;
 
 public class CoreFrame extends JFrame {
@@ -19,7 +19,6 @@ public class CoreFrame extends JFrame {
         this.frameInit();
         // Activate Thread //
         this.thread = new GuiThread(this);
-        // Add Reference //
     }
 
     // Subclass //

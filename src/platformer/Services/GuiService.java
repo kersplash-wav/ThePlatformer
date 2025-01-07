@@ -24,14 +24,17 @@ class GuiService {
         graphics.setFont(titleFont);
 
         graphics.setColor(titleTextShadow);
-        graphics.drawString("Test", xScreen / 2, yScreen / 4); // (hopefully) creates the shadow for the title text
+        graphics.drawString("Test", Math.round(xScreen / 2), Math.round(yScreen / 2)); // (hopefully) creates the shadow
+                                                                                       // for the title text
 
         graphics.setColor(titleTextColor);
-        graphics.drawString("Test", xScreen / 2.1, yScreen / 4.2); // (hopefully) creates the main text - it should be
-                                                                   // above the shadow
+        graphics.drawString("Test", Math.round(xScreen / 2.1), Math.round(yScreen / 2.1)); // (hopefully) creates the
+                                                                                           // main text - it should be
+        // above the shadow
 
-        graphics.drawRect(xScreen / 2, yScreen / 3, xScreen - xScreen * 0.9, yScreen * 0.07); // line underneath the
-                                                                                              // large title text to
-                                                                                              // make visuals better
+        graphics.drawRect((Math.round(xScreen / 2)), (Math.round(yScreen / 2.1)), (Math.round(xScreen - xScreen * 0.9)),
+                (Math.round(yScreen * 0.07))); // line underneath the
+        // large title text to
+        // make visuals better
     }
 }

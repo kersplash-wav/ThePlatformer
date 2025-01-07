@@ -12,14 +12,15 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import platformer.Entities.Entity;
 import platformer.Entities.Platform;
 import platformer.Entities.PlayerCharacter;
 import platformer.Gui.Camera;
 
-public class Tool implements MouseListener {
+public class Tool extends Entity implements MouseListener {
     // Character Data //
-    PlayerCharacter holder;
-    Camera camera;
+    private PlayerCharacter holder;
+    private Camera camera;
     // Data //
     private long deltaTime;
     private Raycast rayCast;
@@ -51,7 +52,8 @@ public class Tool implements MouseListener {
 
     }
 
-    private void update(long deltaTime, Graphics2D graphics, Camera camera) {
+    @Override
+    public void update() {
         rayCast.display(graphics, camera);
     }
 

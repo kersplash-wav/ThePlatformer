@@ -6,7 +6,6 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 import platformer.Main;
-import platformer.Gui.CoreFrame;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;

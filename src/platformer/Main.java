@@ -59,14 +59,19 @@ public class Main {
         // Init Player //
         camera = new Camera(coreFrame);
         player = new Player();
-        graphics = camera.getGraphics();
 
         // Init Platforms //
-        Platform platform1 = new Platform(-250, 500, 500, 100); // x, y, width, height
+        Platform platform1 = new Platform(-250, 300, 500, 100); // x, y, width, height
         Platform platform2 = new Platform(-500, 500, 500, 100);
+        Platform platform4 = new Platform(-1500, 1000, 3000, 200);
         platform1.setColour(Color.RED);
         platform2.setColour(Color.GREEN);
         platform2.setBounce(Constants.Platform.RubberPlatform.bounce);
+
+        platform4.setBounce(Constants.Platform.RubberPlatform.bounce);
+
+        Platform platform3 = new Platform(500, 100, 200, 1000);
+        platform3.setBounce(Constants.Platform.StandardPlatform.bounce);
     }
 
     public static void periodic() {
@@ -75,6 +80,20 @@ public class Main {
                 playerPosition.getX() - coreFrame.getWidth() / 2,
                 playerPosition.getY() - coreFrame.getHeight() / 2));
         offset = camera.getOffset();
-        Entity.renderAll(graphics, offset);
+        player.periodic();
+        // Entity.renderAll(graphics, offset);
+
+        if (playerPosition.getY() > 1500) {
+            player.character.setVelocity(new Point2D.Double());
+            player.character.setPosition(playerPosition.getX(), -1000);
+        }
+        if (playerPosition.getX() > 1001) {
+            player.character.setVelocity(0, player.character.getVelocity().getY());
+            player.character.setPosition(1000, playerPosition.getY());
+        }
+        if (playerPosition.getX() < -1001) {
+            player.character.setVelocity(0, player.character.getVelocity().getY());
+            player.character.setPosition(-1000, playerPosition.getY());
+        }
     }
 }

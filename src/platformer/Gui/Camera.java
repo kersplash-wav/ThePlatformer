@@ -1,9 +1,9 @@
 package platformer.Gui;
 
+import platformer.Entities.Entity;
 import java.awt.geom.Point2D;
 import javax.swing.JPanel;
 import java.awt.Graphics;
-import java.awt.Point;
 
 public class Camera extends JPanel {
     // Instance Data //
@@ -42,5 +42,6 @@ public class Camera extends JPanel {
     // Override Methods //
     @Override
     public void paintComponent(Graphics graphics) {
+        Entity.renderAll(graphics, getOffset());
     }
 }

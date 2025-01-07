@@ -5,7 +5,7 @@ package platformer.Entities;
 import platformer.Constants.PlayerSettings;
 import platformer.Tools.*;
 import java.awt.geom.Point2D;
-
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 
@@ -15,7 +15,7 @@ import java.awt.Point;
 // Base Class //
 public class PlayerCharacter extends Entity {
     // Data //
-    private final Point movementAxis = new Point(0, 0);
+    private Point2D movementAxis = new Point2D.Double(0, 0);
     private Tool equippedTool;
 
     // Constructors //
@@ -28,15 +28,17 @@ public class PlayerCharacter extends Entity {
     }
 
     //
-    public boolean isGrounded() {
+    public Entity isGrounded() {
         // Character Data //
         Point2D underPlayerL = new Point2D.Double(hitBox.getMinX(), hitBox.getMaxY());
         Point2D underPlayerR = new Point2D.Double(hitBox.getMaxX(), hitBox.getMaxY());
         // Check through every platform //
-        for (Entity entity : Platform.platformList) {
+        for (Entity entity : entityList) {
             // Conditions //
             if (entity == this)
                 continue;
+
+            entity.setColour(Color.BLUE);
             // Checks //
             if (entity.hitBox.contains(underPlayerL)) {
                 // Debug //
@@ -46,26 +48,33 @@ public class PlayerCharacter extends Entity {
                  * playerSize.getHeight());
                  */
                 // Experimental //
+
                 translateVelocity(entity.getIntersectEscape(underPlayerL));
+                entity.setColour(Color.MAGENTA);
                 // Success //
-                return true;
+                return entity;
             }
 
             if (entity.hitBox.contains(underPlayerR)) {
                 translateVelocity(entity.getIntersectEscape(underPlayerR));
+                entity.setColour(Color.MAGENTA);
                 // Success //
-                return true;
+                return entity;
             }
             // Fail //
         }
-        return false;
+        return null;
     }
 
     // Override Methods //
     @Override
     public void updatePhysics() {
         super.updatePhysics();
-        isGrounded();
+        // setGravityEffect(isGrounded());
+        // if (isGrounded()) {
+        // translateVelocity()
+        // }
+
     }
 
     @Override
@@ -74,7 +83,19 @@ public class PlayerCharacter extends Entity {
         Point2D velocity = this.getVelocity();
         // Physics //
         updatePhysics();
-        // Movemement //
-        velocity.setLocation(movementAxis.getX(), velocity.getY());
+
+        // Movement //
+        if (isGrounded() != null) {
+            setGravityEffect(false);
+            setVelocity(
+                    new Point2D.Double(velocity.getX() + movementAxis.getX(), velocity.getY() + movementAxis.getY()));
+        } else {
+            setGravityEffect(true);
+            setVelocity(new Point2D.Double(velocity.getX() + movementAxis.getX(), velocity.getY()));
+        }
+    }
+
+    public void setMovementAxis(Point2D point) {
+        movementAxis = point;
     }
 }
