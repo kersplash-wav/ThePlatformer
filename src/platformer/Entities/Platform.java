@@ -13,8 +13,8 @@ public class Platform extends Entity {
     // Public Data //
     public static final ArrayList<Platform> platformList = new ArrayList<Platform>();
     // Private Data //
-    private double friction = Constants.Platform.StandardPlatform.friction;
-    private double bounce = Constants.Platform.StandardPlatform.bounce;
+    private double friction = Constants.PlatformConstants.StandardPlatform.friction;
+    private double bounce = Constants.PlatformConstants.StandardPlatform.bounce;
     // Constructor //
 
     /**
@@ -85,16 +85,6 @@ public class Platform extends Entity {
 
     // Intersection Methods //
     /**
-     * Test whether an entity is intersecting this platform.
-     * 
-     * @param entity the entity to test
-     * @return whether the entity is intersecting this platform
-     */
-    public boolean isIntersecting(Entity entity) {
-        return this.hitBox.intersects(entity.hitBox);
-    }
-
-    /**
      * If an entity is intersecting this platform, get the direction they must
      * travel to leave the platform.
      * 
@@ -108,24 +98,21 @@ public class Platform extends Entity {
 
     }
 
-    @Override
-    public Point2D getIntersectEscape(Point2D point) {
-        // Condtions //
-        if (!isIntersecting(point))
-            return new Point2D.Double(0, 0);
-        // Data //
-        double yOffset = point.getY() - hitBox.getCenterY();
-        // Checks //
-        if (yOffset == 0)
-            yOffset = 1;
-        // Settings //
+    // @Override
+    // public Point2D getIntersectEscape(Point2D point) {
+    // // Condtions //
+    // if (!isIntersecting(point))
+    // return new Point2D.Double(0, 0);
+    // // Data //
+    // double yOffset = point.getY() - hitBox.getCenterY();
+    // // Checks //
+    // if (yOffset == 0)
+    // yOffset = 1;
+    // // Settings //
 
-        yOffset = (yOffset / Math.abs(yOffset)) * Constants.WorldSettings.worldGravity * getBounce();
-        // Success //
-        return new Point2D.Double(0, yOffset);
-    }
-
-    public boolean isIntersecting(Point2D point) {
-        return this.hitBox.contains(point);
-    }
+    // yOffset = (yOffset / Math.abs(yOffset)) *
+    // Constants.WorldSettings.worldGravity * getBounce();
+    // // Success //
+    // return new Point2D.Double(0, yOffset);
+    // }
 }

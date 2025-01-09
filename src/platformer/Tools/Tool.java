@@ -11,22 +11,23 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.Graphics;
 
 import platformer.Entities.Entity;
 import platformer.Entities.Platform;
-import platformer.Entities.PlayerCharacter;
+import platformer.Entities.Character;
 import platformer.Gui.Camera;
 
 public class Tool extends Entity implements MouseListener {
     // Character Data //
-    private PlayerCharacter holder;
+    private Character holder;
     private Camera camera;
     // Data //
     private long deltaTime;
     private Raycast rayCast;
 
     // Constructors //
-    public Tool(PlayerCharacter holder) {
+    public Tool(Character holder) {
         this.holder = holder;
         holder.equipTool(this);
         rayCast = new Raycast(holder.getPosition(), holder.getPosition(), deltaTime);
@@ -34,17 +35,6 @@ public class Tool extends Entity implements MouseListener {
 
     // Update Methods //
     public final void update(Graphics2D graphics, Camera camera) {
-        // Camera //
-        // Data //
-        PointerInfo mouseData = getMouse();
-        // Data //
-        long currentTime = System.currentTimeMillis();
-        // Activate //
-        update(currentTime - deltaTime, graphics, camera);
-        rayCast.globalOrigin = new Point2D.Double(holder.hitBox.getCenterX(), holder.hitBox.getCenterY());
-        rayCast.lookAt(mouseData.getLocation());
-        // Reset //
-        deltaTime = currentTime;
     }
 
     // Private Methods //
@@ -54,7 +44,15 @@ public class Tool extends Entity implements MouseListener {
 
     @Override
     public void update() {
-        rayCast.display(graphics, camera);
+        // Data //
+        PointerInfo mouseData = getMouse();
+        // Data //
+        long currentTime = System.currentTimeMillis();
+        // Activate //
+        rayCast.globalOrigin = new Point2D.Double(holder.hitBox.getCenterX(), holder.hitBox.getCenterY());
+        rayCast.lookAt(mouseData.getLocation());
+        // Reset //
+        deltaTime = currentTime;
     }
 
     private PointerInfo getMouse() {
@@ -85,6 +83,14 @@ public class Tool extends Entity implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    // Override Methods //
+    @Override
+    public void render(Graphics graphics, Point2D offset) {
+        // Initialize Rendering //
+        super.render(graphics, offset);
+        rayCast.display((Graphics2D) graphics, camera);
     }
 }
 
@@ -125,18 +131,12 @@ class Raycast {
     }
 
     // Base Methods //
-    private Line2D getLocalLine(Camera camera) {
+    private Line2D getLine(Camera camera) {
         // Conversion //
-        Point2D localOrigin = camera.toLocal(globalOrigin);
+        Point2D localOrigin = camera.getPosition();
         Point2D localDestination = new Point2D.Double(localOrigin.getX() + direction.getX(),
                 localOrigin.getY() + direction.getY());
         return new Line2D.Double(localOrigin, localDestination);
-    }
-
-    private Line2D getGlobalLine() {
-        Point2D globalDestination = new Point2D.Double(globalOrigin.getX() + direction.getX(),
-                globalOrigin.getY() + direction.getY());
-        return new Line2D.Double(globalOrigin, globalDestination);
     }
 
     public Point2D lookAt(Point2D globalDestination) {
@@ -156,19 +156,16 @@ class Raycast {
     public boolean cast(Camera camera, Graphics2D graphics) {
         for (Platform platform : Platform.platformList) {
             // Local //
-            Line2D localLine = getLocalLine(camera);
-            Point2D localOrigin = localLine.getP1();
-            Point2D localDestination = localLine.getP2();
-            // Global //
-            Line2D globalLine = getGlobalLine();
-            Point2D globalDestination = globalLine.getP2();
+            Line2D localLine = getLine(camera);
+            Point2D origin = localLine.getP1();
+            Point2D destination = localLine.getP2();
             // Hitbox //
             Rectangle2D hitBox = platform.hitBox.getFrame();
             // Debug //
-            graphics.setColor(hitBox.intersectsLine(globalLine) ? Color.blue : Color.yellow);
-            graphics.draw(globalLine);
+            graphics.setColor(hitBox.intersectsLine(localLine) ? Color.blue : Color.yellow);
+            graphics.draw(localLine);
             // Checks //
-            if (hitBox.intersectsLine(globalLine))
+            if (hitBox.intersectsLine(localLine))
                 return true;
         }
         // Fail //
@@ -181,6 +178,6 @@ class Raycast {
         boolean success = cast(camera, graphics);
         // Draw Line //
         graphics.setColor(success ? Color.green : Color.red);
-        graphics.draw(getLocalLine(camera));
+        graphics.draw(getLine(camera));
     }
 }

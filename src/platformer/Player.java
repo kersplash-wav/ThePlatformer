@@ -3,6 +3,7 @@ package platformer;
 import platformer.Gui.*;
 import platformer.Services.InputService;
 import platformer.Entities.*;
+import platformer.Entities.Character;
 import platformer.Tools.*;
 import java.awt.geom.Point2D;
 import java.awt.Graphics;
@@ -14,7 +15,7 @@ import java.awt.Color;
 public class Player {
     // Instance Data //
     Graphics graphics;
-    PlayerCharacter character;
+    Character character;
     CoreFrame coreFrame;
     Camera camera;
     Tool equipedTool;
@@ -25,7 +26,7 @@ public class Player {
      */
     public Player() {
         // Initialize Character //
-        character = new PlayerCharacter();
+        character = new Character();
         character.setGravityEffect(true);
         character.setColour(Color.GRAY);
         coreFrame = Main.coreFrame;
@@ -50,14 +51,23 @@ public class Player {
         double y = 0;
         // Checks //
         if (input.IsKeyDown(VK_W))
-            y += 0.1;
+            if (character.isGrounded())
+                y -= 5;
         if (input.IsKeyDown(VK_S))
-            y -= 0.1;
+            if (!character.isGrounded())
+                y += 1;
         if (input.IsKeyDown(VK_A))
-            x -= 0.1;
+            if (!character.isLeftWalled())
+                x -= 0.1;
         if (input.IsKeyDown(VK_D))
-            x += 0.1;
+            if (!character.isRightWalled())
+                x += 0.1;
 
         character.setMovementAxis(new Point2D.Double(x, y));
+
+        if (character.isGrounded())
+            character.setColour(Color.RED);
+        else
+            character.setColour(Color.BLUE);
     }
 }

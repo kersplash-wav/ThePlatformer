@@ -13,6 +13,7 @@ import java.awt.geom.Point2D;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import platformer.Entities.Wall;
 import platformer.Entities.Entity;
 import platformer.Entities.Platform;
 import platformer.Gui.Camera;
@@ -39,15 +40,13 @@ public class Main {
 
     private static Point2D offset;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         init();
 
         while (true) {
             periodic();
+            Thread.sleep(1000 / 144);
         }
     }
 
@@ -61,17 +60,22 @@ public class Main {
         player = new Player();
 
         // Init Platforms //
-        Platform platform1 = new Platform(-250, 300, 500, 100); // x, y, width, height
-        Platform platform2 = new Platform(-500, 500, 500, 100);
-        Platform platform4 = new Platform(-1500, 1000, 3000, 200);
+        Platform platform1 = new Platform(-250, 400, 500, 12); // x, y, width, height
         platform1.setColour(Color.RED);
+
+        Platform platform2 = new Platform(-500, 600, 500, 12);
         platform2.setColour(Color.GREEN);
-        platform2.setBounce(Constants.Platform.RubberPlatform.bounce);
+        platform2.setBounce(Constants.PlatformConstants.StickyPlatform.bounce);
 
-        platform4.setBounce(Constants.Platform.RubberPlatform.bounce);
+        Platform platform3 = new Platform(-750, 800, 500, 12);
 
-        Platform platform3 = new Platform(500, 100, 200, 1000);
-        platform3.setBounce(Constants.Platform.StandardPlatform.bounce);
+        Platform ground = new Platform(-1500, 1000, 3000, 200);
+        ground.setBounce(Constants.PlatformConstants.RubberPlatform.bounce);
+
+        Wall wall1 = new Wall(-900, 500, 20, 1000);
+
+        wall1.setBounce(5);
+        Wall wall2 = new Wall(800, 500, 100, 500);
     }
 
     public static void periodic() {
@@ -95,5 +99,7 @@ public class Main {
             player.character.setVelocity(0, player.character.getVelocity().getY());
             player.character.setPosition(-1000, playerPosition.getY());
         }
+
+        Entity.updateAll();
     }
 }
