@@ -15,9 +15,11 @@ import java.awt.Graphics;
 
 import platformer.Entities.Wall;
 import platformer.Entities.Entity;
+import platformer.Entities.EntityConstants;
 import platformer.Entities.Platform;
 import platformer.Gui.Camera;
 import platformer.Gui.CoreFrame;
+import platformer.Services.GuiService;
 
 /**
  *
@@ -37,6 +39,11 @@ public class Main {
     public static GraphicsDevice display;
     public static CoreFrame coreFrame;
     public static Graphics graphics;
+
+    public static double minX = -1000;
+    public static double maxX = 1000;
+    public static double minY = -1000;
+    public static double maxY = 1000;
 
     private static Point2D offset;
 
@@ -58,24 +65,24 @@ public class Main {
         // Init Player //
         camera = new Camera(coreFrame);
         player = new Player();
+        
+        GuiService.drawLevelOne(graphics);
 
         // Init Platforms //
-        Platform platform1 = new Platform(-250, 400, 500, 12); // x, y, width, height
-        platform1.setColour(Color.RED);
+        // Platform platform1 = new Platform(-250, 400, 500, 12); // x, y, width, height
+        // platform1.applyPreset(new EntityConstants.PlatformConstants.RubberPlatform());
 
-        Platform platform2 = new Platform(-500, 600, 500, 12);
-        platform2.setColour(Color.GREEN);
-        platform2.setBounce(Constants.PlatformConstants.StickyPlatform.bounce);
+        // Platform platform2 = new Platform(-500, 600, 500, 12);
+        // platform2.applyPreset(new EntityConstants.PlatformConstants.RubberPlatform());
 
-        Platform platform3 = new Platform(-750, 800, 500, 12);
+        // Platform platform3 = new Platform(-750, 800, 500, 12);
 
-        Platform ground = new Platform(-1500, 1000, 3000, 200);
-        ground.setBounce(Constants.PlatformConstants.RubberPlatform.bounce);
+        // Platform ground = new Platform(-1500, 1000, 3000, 200);
 
-        Wall wall1 = new Wall(-900, 500, 20, 1000);
+        // Wall wall1 = new Wall(-900, 500, 20, 1000);
 
-        wall1.setBounce(5);
-        Wall wall2 = new Wall(800, 500, 100, 500);
+        // wall1.setBounce(5);
+        // Wall wall2 = new Wall(800, 500, 100, 500);
     }
 
     public static void periodic() {
@@ -87,19 +94,32 @@ public class Main {
         player.periodic();
         // Entity.renderAll(graphics, offset);
 
-        if (playerPosition.getY() > 1500) {
+        if (playerPosition.getY() > maxY) {
             player.character.setVelocity(new Point2D.Double());
-            player.character.setPosition(playerPosition.getX(), -1000);
+            player.character.setPosition(playerPosition.getX(), minY+1);
         }
-        if (playerPosition.getX() > 1001) {
+        if (playerPosition.getX() > maxX) {
             player.character.setVelocity(0, player.character.getVelocity().getY());
-            player.character.setPosition(1000, playerPosition.getY());
+            player.character.setPosition(maxX, playerPosition.getY());
         }
-        if (playerPosition.getX() < -1001) {
+        if (playerPosition.getX() < minX) {
             player.character.setVelocity(0, player.character.getVelocity().getY());
-            player.character.setPosition(-1000, playerPosition.getY());
+            player.character.setPosition(minX, playerPosition.getY());
         }
 
         Entity.updateAll();
+    }
+
+    public void reset(){
+        Platform.platformList.clear();
+        Entity.entityList.clear();
+        Entity.entityList.add(player.character);
+    }
+
+    public static void setFrame(double minX, double maxX, double minY, double maxY){
+        Main.maxX = maxX;
+        Main.minX = minX;
+        Main.maxY = maxY; 
+        Main.minY = minY;
     }
 }

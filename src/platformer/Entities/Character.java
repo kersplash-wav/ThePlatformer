@@ -1,15 +1,15 @@
 package platformer.Entities;
 
-import platformer.Constants.PlayerSettings;
+import platformer.Entities.EntityConstants.CharacterConstants;
 import java.awt.geom.Point2D;
 import java.awt.Dimension;
-import java.awt.geom.Dimension2D;
 
 public class Character extends Entity {
     private Point2D movementAxis = new Point2D.Double(0, 0);
 
     public Character() {
-        super(new Point2D.Double(0, 0), new Dimension(PlayerSettings.width, PlayerSettings.height));
+        super(new Point2D.Double(0, 0), new Dimension((int)CharacterConstants.width, (int)CharacterConstants.height));
+        setColour(CharacterConstants.colour);
     }
 
     private boolean isGroundedBy(Platform platform) {
@@ -125,7 +125,6 @@ public class Character extends Entity {
     }
 
     @Override
-
     public void update() {
 
         // get current velocity
@@ -145,24 +144,24 @@ public class Character extends Entity {
                 new Point2D.Double(velocity.getX() + movementAxis.getX(), velocity.getY() + movementAxis.getY()));
 
         // Restrict Y Velocity to 10 downwards //
-        if (velocity.getY() > 10)
+        if (velocity.getY() > CharacterConstants.maxDownwardVelocity)
             setVelocity(
-                    new Point2D.Double(velocity.getX(), 10));
+                    new Point2D.Double(velocity.getX(), CharacterConstants.maxDownwardVelocity));
 
         // Restrict Y Velocity to 5 upwards //
-        if (velocity.getY() < -5)
+        if (velocity.getY() < CharacterConstants.maxUpwardVelocity)
             setVelocity(
-                    new Point2D.Double(velocity.getX(), -5));
+                    new Point2D.Double(velocity.getX(), CharacterConstants.maxUpwardVelocity));
 
         // Restrict X Velocity to 10 Right //
-        if (velocity.getX() > 10)
+        if (velocity.getX() > CharacterConstants.maxRightwardVelocity)
             setVelocity(
-                    new Point2D.Double(10, velocity.getY()));
+                    new Point2D.Double(CharacterConstants.maxRightwardVelocity, velocity.getY()));
 
         // Restrict X Velocity to 10 Left //
-        if (velocity.getX() < -10)
+        if (velocity.getX() < CharacterConstants.maxLeftwardVelocity)
             setVelocity(
-                    new Point2D.Double(-10, velocity.getY()));
+                    new Point2D.Double(CharacterConstants.maxLeftwardVelocity, velocity.getY()));
 
         // apply velocity to this object
         applyVelocity();

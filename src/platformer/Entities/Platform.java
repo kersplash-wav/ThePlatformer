@@ -6,20 +6,19 @@ import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.awt.Point;
 import java.awt.Dimension;
-import platformer.Constants;
+import platformer.Entities.EntityConstants.PlatformConstants;
+import platformer.Entities.EntityConstants.PlatformConstants.PresetPlatform;
 
 // Class //
 public class Platform extends Entity {
     // Public Data //
     public static final ArrayList<Platform> platformList = new ArrayList<Platform>();
     // Private Data //
-    private double friction = Constants.PlatformConstants.StandardPlatform.friction;
-    private double bounce = Constants.PlatformConstants.StandardPlatform.bounce;
+    private double friction = PlatformConstants.StandardPlatform.friction;
+    private double bounce = PlatformConstants.StandardPlatform.bounce;
     // Constructor //
 
-    /**
-     * Creates a platform object.
-     * 
+    /**Creates a platform object.
      * @param position the position of the centre of the platform
      * @param size     the width and height of this platform
      */
@@ -28,11 +27,10 @@ public class Platform extends Entity {
         super(position, size);
         // Add Reference //
         platformList.add(this);
+        setColour(PlatformConstants.StandardPlatform.colour);
     }
 
-    /**
-     * Creates a platform object.
-     * 
+    /**Creates a platform object.
      * @param xPos   the x position of the centre of this platform
      * @param yPos   the y position of the centre of this platform
      * @param width  the width of this platform
@@ -41,22 +39,19 @@ public class Platform extends Entity {
     public Platform(int xPos, int yPos, int width, int height) {
         // Activate Parent Constructor //
         this(new Point(xPos, yPos), new Dimension(width, height));
+        setColour(PlatformConstants.StandardPlatform.colour);
     }
 
     // Friction Methods //
 
-    /**
-     * Sets the friction of this platform.
-     * 
+    /**Sets the friction of this platform.
      * @param friction the desired friction of this platform
      */
     public void setFriction(double friction) {
         this.friction = friction;
     }
 
-    /**
-     * Gets the friction of this platform.
-     * 
+    /**Gets the friction of this platform.
      * @return the friction of this platform
      */
     public double getFriction() {
@@ -65,54 +60,28 @@ public class Platform extends Entity {
 
     // Bounce Methods //
 
-    /**
-     * Sets the bounciness of this platform.
-     * 
+    /**Sets the bounciness of this platform.
      * @param bounce the desired bounciness of platform
      */
     public void setBounce(double bounce) {
         this.bounce = bounce;
     }
 
-    /**
-     * Get the bounciness of this platform.
-     * 
+    /**Get the bounciness of this platform.
      * @return the bounciness of the platform
      */
     public double getBounce() {
         return bounce;
     }
 
-    // Intersection Methods //
-    /**
-     * If an entity is intersecting this platform, get the direction they must
-     * travel to leave the platform.
-     * 
-     * @param entity the entity to test
-     * @return the direction the entity must travel to escape the bounds of this
-     *         platform
-     */
-
     @Override
     public void update() {
-
     }
 
-    // @Override
-    // public Point2D getIntersectEscape(Point2D point) {
-    // // Condtions //
-    // if (!isIntersecting(point))
-    // return new Point2D.Double(0, 0);
-    // // Data //
-    // double yOffset = point.getY() - hitBox.getCenterY();
-    // // Checks //
-    // if (yOffset == 0)
-    // yOffset = 1;
-    // // Settings //
-
-    // yOffset = (yOffset / Math.abs(yOffset)) *
-    // Constants.WorldSettings.worldGravity * getBounce();
-    // // Success //
-    // return new Point2D.Double(0, yOffset);
-    // }
+    public void applyPreset(PresetPlatform preset){
+        this.setSize(preset.width, preset.height);
+        this.setBounce(preset.bounce);
+        this.setFriction(preset.friction);
+        this.setColour(preset.colour);
+    }
 }

@@ -8,7 +8,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.awt.Graphics;
-import static platformer.Constants.WorldSettings.*;
 
 public abstract class Entity extends Object {
 
@@ -17,7 +16,7 @@ public abstract class Entity extends Object {
     public final Rectangle2D hitBox;
     private Point2D velocity;
     private boolean affectedByGravity = false;
-    private Color colour = Color.red;
+    private Color colour = Color.black;
     private Boolean collisionsEnabled = true;
 
     protected Entity() {
@@ -110,12 +109,12 @@ public abstract class Entity extends Object {
 
     public void setSize(Dimension2D size) {
         Point2D position = getPosition();
-        hitBox.setFrameFromCenter(position.getX(), position.getY(), size.getWidth(), size.getHeight());
+        hitBox.setRect(position.getX(), position.getY(), size.getWidth(), size.getHeight());
     }
 
     public void setSize(double width, double height) {
         Point2D position = getPosition();
-        hitBox.setFrameFromCenter(position.getX(), position.getY(), width, height);
+        hitBox.setRect(position.getX(), position.getY(), width, height);
     }
 
     public Dimension2D getSize() {
@@ -138,7 +137,7 @@ public abstract class Entity extends Object {
 
     protected void applyGravity() {
         if (affectedByGravity)
-            velocity.setLocation(velocity.getX(), velocity.getY() + worldGravity);
+            velocity.setLocation(velocity.getX(), velocity.getY() + EntityConstants.WorldConstants.worldGravity);
         else if (velocity.getY() > 0)
             velocity.setLocation(velocity.getX(), 0);
     }
