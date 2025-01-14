@@ -137,7 +137,7 @@ public class Character extends Entity {
         applyGravity();
 
         if (isGrounded())
-            setVelocity(velocity.getX(), velocity.getY() + getGround().getBounce());
+            setVelocity(velocity.getX()*(movementAxis.getX() == 0?getGround().getFriction():1), velocity.getY() + getGround().getBounce());
 
         // Movement Controls //
         setVelocity(

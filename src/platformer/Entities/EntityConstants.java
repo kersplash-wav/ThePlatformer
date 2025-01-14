@@ -42,8 +42,9 @@ public class EntityConstants {
                 this.colour = colour;
             }
         }
-        public static PresetPlatform StandardPlatform = new PresetPlatform(200, 12, 10, 0, Color.GRAY);
-        public static PresetPlatform RubberPlatform = new PresetPlatform(200, 12, 10, -5, Color.GREEN);
+        public static PresetPlatform StandardPlatform = new PresetPlatform(200, 12, 0.9, 0, Color.GRAY);
+        public static PresetPlatform RubberPlatform = new PresetPlatform(200, 12, 1.1, -5, Color.GREEN);
+        public static PresetPlatform EndPlatform = new PresetPlatform(200, 12, 0.9, 0, Color.PINK);
     }
 
     public static final class WallConstants {

@@ -42,6 +42,30 @@ public class Platform extends Entity {
         setColour(PlatformConstants.StandardPlatform.colour);
     }
 
+    /**Creates a platform object.
+     * @param position the position of the centre of the platform
+     * @param size     the width and height of this platform
+     */
+    public Platform(Point2D position) {
+        // Activate Parent Constructor //
+        super(position, new Dimension((int)EntityConstants.PlatformConstants.StandardPlatform.width, (int)EntityConstants.PlatformConstants.StandardPlatform.height));
+        // Add Reference //
+        platformList.add(this);
+        setColour(PlatformConstants.StandardPlatform.colour);
+    }
+
+    /**Creates a platform object.
+     * @param xPos   the x position of the centre of this platform
+     * @param yPos   the y position of the centre of this platform
+     * @param width  the width of this platform
+     * @param height the height of this platform
+     */
+    public Platform(int xPos, int yPos) {
+        // Activate Parent Constructor //
+        this(new Point(xPos, yPos), new Dimension((int)EntityConstants.PlatformConstants.StandardPlatform.width, (int)EntityConstants.PlatformConstants.StandardPlatform.height));
+        setColour(PlatformConstants.StandardPlatform.colour);
+    }
+
     // Friction Methods //
 
     /**Sets the friction of this platform.

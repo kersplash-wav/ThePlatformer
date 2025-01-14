@@ -51,7 +51,8 @@ public class GuiService {
     }
 
     public static void drawLevelOne(Graphics graphics) {
-        Main.setFrame(-1000, 3000, -1000, 500);
+        //Main.setFrame(-1000, 3000, -1000, 500);
+        Main.setBoundaries(-1000, 3000, -1000, 500);
         Image levelOneBackground = Toolkit.getDefaultToolkit().getImage("platformer/Gui/Images/CSlevel001.png");
         Platform platform1 = new Platform(-150, 500, 500, 12); // the player needs to spawn at x = 850
         Platform platform2 = new Platform(350, 470, 500, 12);
@@ -68,5 +69,4 @@ public class GuiService {
         Platform platform10 = new Platform(3900, 1600, 200, 12); // end platform
         //platform10.setColour(Color.GREEN);
     }
-
 }
