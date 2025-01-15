@@ -9,10 +9,14 @@ package platformer;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.image.*;
+
+import javax.swing.ImageIcon;
 
 import platformer.Entities.Wall;
 import platformer.Entities.Entity;

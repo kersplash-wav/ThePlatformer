@@ -2,6 +2,8 @@ package platformer.Gui;
 
 import platformer.Entities.Entity;
 import java.awt.geom.Point2D;
+
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 
@@ -42,6 +44,8 @@ public class Camera extends JPanel {
     // Override Methods //
     @Override
     public void paintComponent(Graphics graphics) {
+                ImageIcon img = new ImageIcon("src/platformer/Gui/Images/test.png");
+        graphics.drawImage(img.getImage(), 0, 0, img.getImageObserver());
         Entity.renderAll(graphics, getOffset());
     }
 }
