@@ -21,10 +21,12 @@ import javax.swing.ImageIcon;
 import platformer.Entities.Wall;
 import platformer.Entities.Entity;
 import platformer.Entities.EntityConstants.*;
+import platformer.Entities.EntityConstants.PlatformConstants.PresetPlatform;
 import platformer.Entities.Platform;
 import platformer.Gui.Camera;
 import platformer.Gui.CoreFrame;
 import platformer.Services.GuiService;
+import platformer.Services.Level;
 
 /**
  *
@@ -53,8 +55,7 @@ public class Main {
     public static Point2D spawn = new Point2D.Double();
 
     private static Platform endPlatform;
-    private static int currentLevel = 1;
-    private static int levelCount = 3;
+    private static int currentLevel = 0;
 
     private static Point2D offset;
 
@@ -77,8 +78,12 @@ public class Main {
         // Init Player //
         camera = new Camera(coreFrame);
         player = new Player();
+
+        loadLevel(0);
         
-        levelOne();
+        //Level.Load("Tutorial");
+        
+        //levelOne();
         //GuiService.drawLevelOne(graphics);
 
         // Init Platforms //
@@ -107,10 +112,8 @@ public class Main {
         player.periodic();
         applyBoundaries();
         Entity.updateAll();
-        if(player.character.getGround() == endPlatform){
+        if(player.character.getGround() == endPlatform&&endPlatform!=null){
             currentLevel++;
-            if(currentLevel>levelCount)
-                currentLevel = 1;
             loadLevel(currentLevel);
         }
     }
@@ -163,6 +166,9 @@ public class Main {
 
     public static void loadLevel(int level){
         switch(level){
+            case 0:
+            mainScreen();
+            break;
             case 1:
             levelOne();    
             break;
@@ -172,7 +178,22 @@ public class Main {
             case 3:
             levelThree();
             break;
+            case 4:
+                winScreen();
+                break;
         }
+    }
+
+    public static void mainScreen(){
+        camera.setBackgroundImage(new ImageIcon("mainScreen.png"));
+        setPlayerSpawn(50, -150);
+        setBoundaries(-1000, 1000, -1000, 1000);
+        reset();
+        new Platform(0,0).applyPreset(PlatformConstants.StandardPlatform);
+        new Platform(400, 0).applyPreset(PlatformConstants.RubberPlatform);
+        endPlatform = null;
+        endPlatform = new Platform(800, 0);
+        endPlatform.applyPreset(PlatformConstants.EndPlatform);
     }
 
     private static void levelOne(){
@@ -216,5 +237,16 @@ public class Main {
         endPlatform = null;
         endPlatform = new Platform(450, 600);
         endPlatform.applyPreset(PlatformConstants.EndPlatform);
+    }
+
+    private static void winScreen(){
+        camera.setBackgroundImage(new ImageIcon("winScreen.java"));
+        setPlayerSpawn(0,-200);
+        setBoundaries(-500, 500, -500, 500);
+        reset();
+        Platform platform = new Platform(-1500, 0, 3000, 1000);
+        platform.setBounce(PlatformConstants.RubberPlatform.bounce);
+        platform.setColour(PlatformConstants.RubberPlatform.colour);  
+        endPlatform = null;  
     }
 }

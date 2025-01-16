@@ -17,7 +17,8 @@ public abstract class Entity extends Object {
     private Point2D velocity;
     private boolean affectedByGravity = false;
     private Color colour = Color.black;
-    private Boolean collisionsEnabled = true;
+    private boolean collisionsEnabled = true;
+    private boolean visible = true;
 
     protected Entity() {
         hitBox = new Rectangle2D.Double();
@@ -75,6 +76,14 @@ public abstract class Entity extends Object {
 
     public Color getColour() {
         return this.colour;
+    }
+
+    public void setVisibility(boolean visible){
+        this.visible = visible;
+    }
+
+    public boolean getVisibility(){
+        return visible;
     }
 
     public void setPosition(double x, double y) {
@@ -156,6 +165,8 @@ public abstract class Entity extends Object {
     }
 
     public void render(Graphics graphics, Point2D offset) {
+        if(!visible)
+            return;
 
         Point2D position = this.getPosition();
         Dimension2D size = this.getSize();
