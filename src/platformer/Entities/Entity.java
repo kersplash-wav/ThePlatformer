@@ -1,13 +1,17 @@
 package platformer.Entities;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfigTemplate;
 
 public abstract class Entity extends Object {
 
@@ -164,9 +168,11 @@ public abstract class Entity extends Object {
         render(graphics, new Point2D.Double());
     }
 
-    public void render(Graphics graphics, Point2D offset) {
+    public void render(Graphics _graphics, Point2D offset) {
         if(!visible)
             return;
+
+        Graphics2D graphics = (Graphics2D)_graphics;
 
         Point2D position = this.getPosition();
         Dimension2D size = this.getSize();
@@ -180,6 +186,7 @@ public abstract class Entity extends Object {
         graphics.setColor(getColour());
         graphics.fillRect(xPos, yPos, width, height);
         graphics.setColor(Color.black);
+        graphics.setStroke(new BasicStroke(5));
         graphics.drawRect(xPos, yPos, width, height);
     }
 

@@ -34,7 +34,8 @@ public class EntityConstants {
             public final double friction;
             public final double bounce;
             public final Color colour;
-            private PresetPlatform(double width, double height, double friction, double bounce, Color colour){
+
+            private PresetPlatform(double width, double height, double friction, double bounce, Color colour) {
                 this.width = width;
                 this.height = height;
                 this.bounce = bounce;
@@ -42,29 +43,31 @@ public class EntityConstants {
                 this.colour = colour;
             }
         }
+
         public static PresetPlatform StandardPlatform = new PresetPlatform(200, 12, 0.9, 0, Color.GRAY);
         public static PresetPlatform RubberPlatform = new PresetPlatform(200, 12, 1.1, -5, Color.GREEN);
         public static PresetPlatform EndPlatform = new PresetPlatform(200, 12, 0.9, 0, Color.PINK);
     }
 
     public static final class WallConstants {
-        // friction (F) = coefficient of friction (μ) * normal force (N)
-        // F = μN
+        public static class PresetWall {
+            public final double width;
+            public final double height;
+            public final double friction;
+            public final double bounce;
+            public final Color colour;
 
-        public static abstract class PresetWall {
-            public static final double width = 500;
-            public static final double height = 12;
-            public static final double friction = 10;
-            public static final double bounce = 0;
-            public static final Color colour = Color.GRAY;
+            private PresetWall(double width, double height, double friction, double bounce, Color colour) {
+                this.width = width;
+                this.height = height;
+                this.bounce = bounce;
+                this.friction = friction;
+                this.colour = colour;
+            }
         }
 
-        public static final class RubberWall extends PresetWall {
-            public static final double width = 500;
-            public static final double height = 12;
-            public static final double friction = 20;
-            public static final double bounce = -5;
-            public static final Color colour = Color.darkGray;
-        }
+        public static PresetWall RubberWall = new PresetWall(12, 500, 0, 5, Color.GREEN);
+        public static PresetWall StandardWall = new PresetWall(12, 500, 5, 0, Color.GRAY);
+        public static PresetWall StickyWall = new PresetWall(12, 500, -20, 0, Color.ORANGE);
     }
 }

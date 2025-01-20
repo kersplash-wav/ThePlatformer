@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import java.awt.Dimension;
 import java.awt.Graphics;
 
 public class Camera extends JPanel {
@@ -50,9 +51,10 @@ public class Camera extends JPanel {
     // Override Methods //
     @Override
     public void paintComponent(Graphics graphics) {
-        // if(background!=null && Level.currentLevel != null){
-        //     Level.currentLevel.Update(graphics);
-        // }
+        if(background!=null){
+            Dimension size = getFrame().getSize();
+            graphics.drawImage(background.getImage(), (int)(-position.getX()/10 - size.getWidth() / 2), (int)(-position.getY()/10 - size.getHeight() / 3), (int)size.getWidth()*2, (int)size.getHeight()*2,null);
+        }
         Entity.renderAll(graphics, getOffset());
     }
 }

@@ -28,7 +28,6 @@ public class Player {
         // Initialize Character //
         character = new Character();
         character.setGravityEffect(true);
-        character.setColour(Color.GRAY);
         coreFrame = Main.coreFrame;
         camera = Main.camera;
         graphics = Main.graphics;
@@ -51,7 +50,7 @@ public class Player {
         double y = 0;
         // Checks //
         if (input.IsKeyDown(VK_W))
-            if (character.isGrounded())
+            if (character.isGrounded()||(character.isLeftWalled()&&character.getLeftWall().getFriction()<-0.1)||(character.isRightWalled()&&character.getRightWall().getFriction()<-0.1))
                 y -= 5;
         if (input.IsKeyDown(VK_S))
             if (!character.isGrounded())
@@ -64,10 +63,5 @@ public class Player {
                 x += 0.1;
 
         character.setMovementAxis(new Point2D.Double(x, y));
-
-        if (character.isGrounded())
-            character.setColour(Color.RED);
-        else
-            character.setColour(Color.BLUE);
     }
 }

@@ -19,7 +19,6 @@ public class GuiService {
         try {
             Dimension screenSize = Main.coreFrame.getSize();
             Image bgImage = ImageIO.read(new File("src/platformer/Gui/Images/CSlevel001.png"));
-            // drawTitleScreen(graphics);
             graphics.drawImage(bgImage, 0, 0, screenSize.width, screenSize.height, null);
         }
 
@@ -27,27 +26,6 @@ public class GuiService {
         }
 
         drawLevelOne(graphics);
-    }
-
-    public static void drawTitleScreen(Graphics2D graphics) {
-        Dimension screenSize = Main.coreFrame.getSize();
-        double xScreen = screenSize.getWidth();
-        double yScreen = screenSize.getHeight();
-        Color titleTextShadow = new Color(47, 84, 84); // darker colour will be put behind the lighter title screen text
-                                                       // to improve visual design
-        Color titleTextColor = new Color(192, 255, 254); // title screen text used to display the game's name
-        Font titleFont = new Font("Serif", Font.BOLD, 28); // creating the font used
-        // SETTING FONT FOR ALL TEXT
-        graphics.setFont(titleFont);
-
-        graphics.setColor(titleTextShadow);
-        graphics.drawString("Test", Math.round(xScreen / 2), Math.round(yScreen / 2)); // (hopefully) creates the shadow
-                                                                                       // for the title text
-
-        graphics.setColor(titleTextColor);
-        graphics.drawString("Test", Math.round(xScreen / 2.1), Math.round(yScreen / 2.1)); // (hopefully) creates the
-                                                                                           // main text - it should be
-        // above the shadow
     }
 
     public static void drawLevelOne(Graphics graphics) {

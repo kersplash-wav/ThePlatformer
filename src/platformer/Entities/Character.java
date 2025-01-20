@@ -2,9 +2,18 @@ package platformer.Entities;
 
 import platformer.Entities.EntityConstants.CharacterConstants;
 import java.awt.geom.Point2D;
+
+import javax.swing.ImageIcon;
+
 import java.awt.Dimension;
+import java.awt.geom.Dimension2D;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.BasicStroke;
 
 public class Character extends Entity {
+    private ImageIcon characterImage = new ImageIcon("src/platformer/Gui/Images/characterRight.png");
     private Point2D movementAxis = new Point2D.Double(0, 0);
 
     public Character() {
@@ -177,20 +186,50 @@ public class Character extends Entity {
 
         if (velocity.getX() < 0) {
             if (isLeftWalled()) {
-                setVelocity(getLeftWall().getBounce(), velocity.getY());
-                setPosition(getLeftWall().hitBox.getMaxX(), getPosition().getY());
+                setVelocity(getLeftWall().getBounce(), velocity.getY()+getLeftWall().getFriction());
+                setPosition(getLeftWall().hitBox.getMaxX()-1, getPosition().getY());
             }
         }
 
         if (velocity.getX() > 0) {
             if (isRightWalled()) {
-                setVelocity(getRightWall().getBounce(), velocity.getY());
-                setPosition(getRightWall().hitBox.getMinX() - getSize().getWidth(), getPosition().getY());
+                setVelocity(-getRightWall().getBounce(), velocity.getY()+getRightWall().getFriction());
+                setPosition(getRightWall().hitBox.getMinX() - getSize().getWidth()+1, getPosition().getY());
             }
         }
     }
 
     public void setMovementAxis(Point2D point) {
         movementAxis = point;
+    }
+
+    // Override Methods //
+    @Override
+    public void render(Graphics graphics) {
+        render(graphics, new Point2D.Double());
+    }
+
+    @Override
+    public void render(Graphics _graphics, Point2D offset) {
+        Graphics2D graphics = (Graphics2D)_graphics;
+
+        Point2D position = this.getPosition();
+        Point2D velocity = this.getVelocity();
+        boolean flipped = velocity.getX()<0;
+
+        Dimension2D size = this.getSize();
+
+        int xPos = (int) position.getX() + (int) offset.getX() + (int)((flipped ? 1 : 0) * size.getWidth());
+        int yPos = (int) position.getY() + (int) offset.getY();
+
+        int width = (int) size.getWidth() * (flipped ? -1 : 1);
+        int height = (int) size.getHeight();
+
+        graphics.setColor(getColour());
+        graphics.drawImage(characterImage.getImage(), xPos, yPos, width, height, null);
+//        graphics.fillRect(xPos, yPos, width, height);
+        graphics.setColor(Color.black);
+        graphics.setStroke(new BasicStroke(5));
+        graphics.drawRect((int)position.getX() + (int)offset.getX(), yPos, Math.abs(width), height);
     }
 }

@@ -39,7 +39,6 @@ public class Platform extends Entity {
     public Platform(int xPos, int yPos, int width, int height) {
         // Activate Parent Constructor //
         this(new Point(xPos, yPos), new Dimension(width, height));
-        setColour(PlatformConstants.StandardPlatform.colour);
     }
 
     /**Creates a platform object.

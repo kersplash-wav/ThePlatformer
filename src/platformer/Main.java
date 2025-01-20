@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 
-// Controller Clas https://jinput.github.io/jinput/
-
 package platformer;
 
 import java.awt.GraphicsDevice;
@@ -79,19 +77,21 @@ public class Main {
         camera = new Camera(coreFrame);
         player = new Player();
 
-        loadLevel(0);
-        
-        //Level.Load("Tutorial");
-        
-        //levelOne();
-        //GuiService.drawLevelOne(graphics);
+        loadLevel(currentLevel);
+
+        // Level.Load("Tutorial");
+
+        // levelOne();
+        // GuiService.drawLevelOne(graphics);
 
         // Init Platforms //
         // Platform platform1 = new Platform(-250, 400, 500, 12); // x, y, width, height
-        // platform1.applyPreset(new EntityConstants.PlatformConstants.RubberPlatform());
+        // platform1.applyPreset(new
+        // EntityConstants.PlatformConstants.RubberPlatform());
 
         // Platform platform2 = new Platform(-500, 600, 500, 12);
-        // platform2.applyPreset(new EntityConstants.PlatformConstants.RubberPlatform());
+        // platform2.applyPreset(new
+        // EntityConstants.PlatformConstants.RubberPlatform());
 
         // Platform platform3 = new Platform(-750, 800, 500, 12);
 
@@ -112,13 +112,13 @@ public class Main {
         player.periodic();
         applyBoundaries();
         Entity.updateAll();
-        if(player.character.getGround() == endPlatform&&endPlatform!=null){
+        if (player.character.getGround() == endPlatform && endPlatform != null) {
             currentLevel++;
             loadLevel(currentLevel);
         }
     }
 
-    public static void reset(){
+    public static void reset() {
         Platform.platformList.clear();
         Entity.entityList.clear();
         Entity.entityList.add(player.character);
@@ -127,20 +127,22 @@ public class Main {
         graphics.setFont(new Font("Arial", Font.BOLD, 24));
     }
 
-    /**Set the player boundary
+    /**
+     * Set the player boundary
+     * 
      * @param minX
      * @param maxX
      * @param minY
      * @param maxY
      */
-    public static void setBoundaries(double minX, double maxX, double minY, double maxY){
+    public static void setBoundaries(double minX, double maxX, double minY, double maxY) {
         Main.maxX = maxX;
         Main.minX = minX;
-        Main.maxY = maxY; 
+        Main.maxY = maxY;
         Main.minY = minY;
     }
 
-    public static void applyBoundaries(){
+    public static void applyBoundaries() {
         Point2D playerPosition = player.getPosition();
         if (playerPosition.getY() > maxY) {
             player.character.setVelocity(new Point2D.Double());
@@ -160,43 +162,45 @@ public class Main {
         }
     }
 
-    public static void setPlayerSpawn(double x, double y){
-        spawn = new Point2D.Double(x,y);
+    public static void setPlayerSpawn(double x, double y) {
+        spawn = new Point2D.Double(x, y);
     }
 
-    public static void loadLevel(int level){
-        switch(level){
+    public static void loadLevel(int level) {
+        switch (level) {
             case 0:
-            mainScreen();
-            break;
+                mainScreen();
+                break;
             case 1:
-            levelOne();    
-            break;
+                levelOne();
+                break;
             case 2:
-            levelTwo();
-            break;          
+                levelTwo();
+                break;
             case 3:
-            levelThree();
-            break;
-            case 4:
+                levelThree();
+                break;
+            default:
                 winScreen();
                 break;
         }
     }
 
-    public static void mainScreen(){
-        camera.setBackgroundImage(new ImageIcon("mainScreen.png"));
+    public static void mainScreen() {
+        camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/purpleTitle.png")); // src/platformer/Gui/Images/blueSkyBackground.png
         setPlayerSpawn(50, -150);
         setBoundaries(-1000, 1000, -1000, 1000);
         reset();
-        new Platform(0,0).applyPreset(PlatformConstants.StandardPlatform);
+        new Platform(0, 0).applyPreset(PlatformConstants.StandardPlatform);
         new Platform(400, 0).applyPreset(PlatformConstants.RubberPlatform);
         endPlatform = null;
         endPlatform = new Platform(800, 0);
         endPlatform.applyPreset(PlatformConstants.EndPlatform);
     }
 
-    private static void levelOne(){
+    private static void levelOne() {
+
+        camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/blueSkyBackground.png"));
         setBoundaries(0, 5000, -1000, 1000);
         setPlayerSpawn(0, -200);
         reset();
@@ -210,7 +214,9 @@ public class Main {
         endPlatform.applyPreset(PlatformConstants.EndPlatform);
     }
 
-    private static void levelTwo(){
+    private static void levelTwo() {
+        camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/redSkyBackground.png"));
+
         setBoundaries(0, 5000, -1000, 1000);
         setPlayerSpawn(0, -200);
         reset();
@@ -225,7 +231,8 @@ public class Main {
         endPlatform.applyPreset(PlatformConstants.EndPlatform);
     }
 
-    private static void levelThree(){
+    private static void levelThree() {
+        camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/purpleSkyBackground.png"));
         setBoundaries(0, 5000, -1000, 1000);
         setPlayerSpawn(0, -700);
         reset();
@@ -239,14 +246,25 @@ public class Main {
         endPlatform.applyPreset(PlatformConstants.EndPlatform);
     }
 
-    private static void winScreen(){
-        camera.setBackgroundImage(new ImageIcon("winScreen.java"));
-        setPlayerSpawn(0,-200);
-        setBoundaries(-500, 500, -500, 500);
+    private static void winScreen() {
+        camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/greenWin.png"));
+        setPlayerSpawn(0, -200);
+        setBoundaries(-2000, 2000, -500, 500);
         reset();
-        Platform platform = new Platform(-1500, 0, 3000, 1000);
+        Wall leftWall = new Wall(-2500, -1000);
+        Wall rightWall = new Wall(1500, -1000);
+
+        leftWall.applyPreset(WallConstants.RubberWall);
+        rightWall.applyPreset(WallConstants.RubberWall);
+
+        leftWall.setSize(1000, 1000);
+        rightWall.setSize(1000, 1000);
+
+        Platform platform = new Platform(-2500, 0, 5000, 1000);
         platform.setBounce(PlatformConstants.RubberPlatform.bounce);
-        platform.setColour(PlatformConstants.RubberPlatform.colour);  
-        endPlatform = null;  
+        platform.setColour(PlatformConstants.RubberPlatform.colour);
+
+        endPlatform = null;
     }
+
 }
