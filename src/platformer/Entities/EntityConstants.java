@@ -2,9 +2,13 @@ package platformer.Entities;
 
 import java.awt.Color;
 
+// These are all the constant values for the entities
 public class EntityConstants {
 
     public final class WorldConstants {
+        /**
+         * The world gravity for the character
+        */
         public static final double worldGravity = 0.05;
     }
 

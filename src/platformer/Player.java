@@ -4,7 +4,6 @@ import platformer.Gui.*;
 import platformer.Services.InputService;
 import platformer.Entities.*;
 import platformer.Entities.Character;
-import platformer.Tools.*;
 import java.awt.geom.Point2D;
 import java.awt.Graphics;
 import static java.awt.event.KeyEvent.*;
@@ -14,15 +13,29 @@ import java.awt.Color;
 
 public class Player {
     // Instance Data //
+    /**
+     * The graphics object which is used with paintComponent on the camera
+     */
     Graphics graphics;
+    /**
+     * The character entity object
+     */
     Character character;
+    /**
+     * The parent frame of the camera
+     */
     CoreFrame coreFrame;
+    /**
+     * The camera, a child of the parent frame / core frame
+     */
     Camera camera;
-    Tool equipedTool;
+    /**
+     * The InputService for checking whether a key is down
+     */
     InputService input = InputService.GetInputService();
 
     /**
-     * Creates a player
+     * Constructs a player, which constructs its character too.
      */
     public Player() {
         // Initialize Character //
@@ -33,6 +46,9 @@ public class Player {
         graphics = Main.graphics;
     }
 
+    /**
+     * Renders all the entities
+     */
     public void render() {
         graphics = camera.getGraphics();
         Point2D offset = camera.getPosition();
@@ -41,10 +57,18 @@ public class Player {
         }
     }
 
+    /**
+     * Getter for the character position
+     * @return
+     * The character position
+     */
     public Point2D getPosition() {
         return character.getPosition();
     }
 
+    /**
+     * Periodic function, handles movement
+     */
     public void periodic() {
         double x = 0;
         double y = 0;

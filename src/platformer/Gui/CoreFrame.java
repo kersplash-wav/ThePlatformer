@@ -7,9 +7,17 @@ import javax.swing.JFrame;
 
 public class CoreFrame extends JFrame {
     // Data //
+    /**
+     * The thread which the gui updates on
+     */
     public final GuiThread thread;
 
     // Constructor //
+    /**
+     * Constructs a new parent frame
+     * @param display
+     * The screen the frame will appear on
+     */
     public CoreFrame(GraphicsDevice display) {
         // Init //
         super(display.getDefaultConfiguration());
@@ -24,9 +32,17 @@ public class CoreFrame extends JFrame {
     // Subclass //
     public class GuiThread extends Thread {
         // Data //
+        /**
+         * The parent frame which this thread updates
+         */
         public final CoreFrame coreFrame;
 
         // Constructor //
+        /**
+         * Constructs a new thread which will update a frame
+         * @param coreFrame
+         * The parent frame which this thread will update
+         */
         public GuiThread(CoreFrame coreFrame) {
             // Attach Parent //
             this.coreFrame = coreFrame;

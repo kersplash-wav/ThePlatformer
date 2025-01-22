@@ -16,16 +16,20 @@ public class Character extends Entity {
     private ImageIcon characterImage = new ImageIcon("src/platformer/Gui/Images/characterRight.png");
     private Point2D movementAxis = new Point2D.Double(0, 0);
 
+    /**A character object that responds to user input and physics.
+    */
     public Character() {
         super(new Point2D.Double(0, 0), new Dimension((int)CharacterConstants.width, (int)CharacterConstants.height));
         setColour(CharacterConstants.colour);
     }
 
+    /**
+     * @param platform the platform to test
+     * @return whether the player is on this platform
+     */
     private boolean isGroundedBy(Platform platform) {
         Point2D underPlayerL = new Point2D.Double(hitBox.getMinX(), hitBox.getMaxY());
         Point2D underPlayerR = new Point2D.Double(hitBox.getMaxX(), hitBox.getMaxY());
-        if (!platform.getCollisionsEnabled())
-            return false;
         if (platform.hitBox.contains(underPlayerL))
             return true;
         if (platform.hitBox.contains(underPlayerR))
@@ -33,6 +37,9 @@ public class Character extends Entity {
         return false;
     }
 
+    /**
+     * @return whether the player is on any platform
+     */
     public boolean isGrounded() {
         for (Platform platform : Platform.platformList) {
             if (isGroundedBy(platform))
@@ -41,6 +48,9 @@ public class Character extends Entity {
         return false;
     }
 
+    /**
+     * @return the platform that the player is currently on
+     */
     public Platform getGround() {
         for (Platform platform : Platform.platformList) {
             if (isGroundedBy(platform))
@@ -49,39 +59,14 @@ public class Character extends Entity {
         return null;
     }
 
-    public boolean isRoofedBy(Platform platform) {
-        Point2D abovePlayerL = new Point2D.Double(hitBox.getMinX(), hitBox.getMinY());
-        Point2D abovePlayerR = new Point2D.Double(hitBox.getMaxX(), hitBox.getMinY());
-        if (!platform.getCollisionsEnabled())
-            return false;
-        if (platform.hitBox.contains(abovePlayerL))
-            return true;
-        if (platform.hitBox.contains(abovePlayerR))
-            return true;
-        return false;
-    }
 
-    public boolean isRoofed() {
-        for (Platform platform : Platform.platformList) {
-            if (isRoofedBy(platform))
-                return true;
-        }
-        return false;
-    }
-
-    public Platform getRoof() {
-        for (Platform platform : Platform.platformList) {
-            if (isRoofedBy(platform))
-                return platform;
-        }
-        return null;
-    }
-
+    /**
+     * @param wall the wall to test
+     * @return whether the left side of the player is hitting this wall 
+     */
     private boolean isLeftWalledBy(Wall wall) {
         Point2D underPlayerL = new Point2D.Double(hitBox.getMinX(), hitBox.getMaxY());
         Point2D abovePlayerL = new Point2D.Double(hitBox.getMinX(), hitBox.getMinY());
-        if (!wall.getCollisionsEnabled())
-            return false;
         if (wall.hitBox.contains(underPlayerL))
             return true;
         if (wall.hitBox.contains(abovePlayerL))
@@ -89,6 +74,10 @@ public class Character extends Entity {
         return false;
     }
 
+    
+    /**
+     * @return whether the left side of the player is hitting a wall
+     */
     public boolean isLeftWalled() {
         for (Wall wall : Wall.wallList) {
             if (isLeftWalledBy(wall))
@@ -97,6 +86,9 @@ public class Character extends Entity {
         return false;
     }
 
+    /**
+     * @return the wall that the left side of the player is hitting
+     */
     public Wall getLeftWall() {
         for (Wall wall : Wall.wallList) {
             if (isLeftWalledBy(wall))
@@ -105,11 +97,14 @@ public class Character extends Entity {
         return null;
     }
 
+    
+    /**
+     * @param wall the wall to test
+     * @return whether the right side of the player is hitting this wall
+     */
     private boolean isRightWalledBy(Wall wall) {
         Point2D underPlayerR = new Point2D.Double(hitBox.getMaxX(), hitBox.getMaxY());
         Point2D abovePlayerR = new Point2D.Double(hitBox.getMaxX(), hitBox.getMinY());
-        if (!wall.getCollisionsEnabled())
-            return false;
         if (wall.hitBox.contains(underPlayerR))
             return true;
         if (wall.hitBox.contains(abovePlayerR))
@@ -117,6 +112,9 @@ public class Character extends Entity {
         return false;
     }
 
+    /**
+     * @return whether the right side of the player is hitting a wall
+     */
     public boolean isRightWalled() {
         for (Wall wall : Wall.wallList) {
             if (isRightWalledBy(wall))
@@ -125,6 +123,10 @@ public class Character extends Entity {
         return false;
     }
 
+
+    /**
+     * @return the wall that the right side of the player is hitting
+     */
     public Wall getRightWall() {
         for (Wall wall : Wall.wallList) {
             if (isRightWalledBy(wall))
@@ -133,23 +135,19 @@ public class Character extends Entity {
         return null;
     }
 
+
     @Override
     public void update() {
 
-        // get current velocity
         Point2D velocity = getVelocity();
-
-        // Don't constantly send through ground //
         setGravityEffect(!isGrounded());
-
-        // apply gravity to velocity
         applyGravity();
 
+        // Apply friction and bounce //
         if (isGrounded())
             setVelocity(velocity.getX()*(movementAxis.getX() == 0?getGround().getFriction():1), velocity.getY() + getGround().getBounce());
 
-        // Movement Controls //
-        setVelocity(
+            setVelocity(
                 new Point2D.Double(velocity.getX() + movementAxis.getX(), velocity.getY() + movementAxis.getY()));
 
         // Restrict Y Velocity to 10 downwards //
@@ -172,18 +170,17 @@ public class Character extends Entity {
             setVelocity(
                     new Point2D.Double(CharacterConstants.maxLeftwardVelocity, velocity.getY()));
 
-        // apply velocity to this object
+
         applyVelocity();
 
-        // if moving downwards
+        // Don't go through ground //
         if (velocity.getY() >= 0) {
-            // if touching ground
             if (isGrounded()) {
-                // move to top of ground
                 setPosition(getPosition().getX(), getGround().getPosition().getY() - getSize().getHeight() + 1);
             }
         }
 
+        // Don't go through left walls //
         if (velocity.getX() < 0) {
             if (isLeftWalled()) {
                 setVelocity(getLeftWall().getBounce(), velocity.getY()+getLeftWall().getFriction());
@@ -191,6 +188,7 @@ public class Character extends Entity {
             }
         }
 
+        // Don't go through right walls //
         if (velocity.getX() > 0) {
             if (isRightWalled()) {
                 setVelocity(-getRightWall().getBounce(), velocity.getY()+getRightWall().getFriction());
@@ -199,17 +197,26 @@ public class Character extends Entity {
         }
     }
 
+    /** Set the movement axis of this player, the 2D velocity that is constantly applied
+     * @param point the 2D velocity to apply to the player
+     */
     public void setMovementAxis(Point2D point) {
         movementAxis = point;
     }
 
-    // Override Methods //
     @Override
+    /** Render the player to the screen
+     * @param graphics the graphics to render this player to
+     */
     public void render(Graphics graphics) {
         render(graphics, new Point2D.Double());
     }
 
     @Override
+    /** Render the player to the screen using a camera offset
+     * @param graphics the graphics to render this player too
+     * @param offset the point to offset the player by
+     */
     public void render(Graphics _graphics, Point2D offset) {
         Graphics2D graphics = (Graphics2D)_graphics;
 
@@ -227,7 +234,6 @@ public class Character extends Entity {
 
         graphics.setColor(getColour());
         graphics.drawImage(characterImage.getImage(), xPos, yPos, width, height, null);
-//        graphics.fillRect(xPos, yPos, width, height);
         graphics.setColor(Color.black);
         graphics.setStroke(new BasicStroke(5));
         graphics.drawRect((int)position.getX() + (int)offset.getX(), yPos, Math.abs(width), height);

@@ -1,37 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
-
 package platformer;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.geom.Point2D;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.image.*;
 
 import javax.swing.ImageIcon;
 
 import platformer.Entities.Wall;
 import platformer.Entities.Entity;
 import platformer.Entities.EntityConstants.*;
-import platformer.Entities.EntityConstants.PlatformConstants.PresetPlatform;
 import platformer.Entities.Platform;
 import platformer.Gui.Camera;
 import platformer.Gui.CoreFrame;
-import platformer.Services.GuiService;
-import platformer.Services.Level;
 
 /**
- *
- * @author: Nicholas Ranin
- * @date: Nov 27, 2024
- *        filename: Platformer.java
- * @description: Fill In!
+ * @author Nicholas Ranin, Joachim Michalef, Robert Rodriguez, Isaac MacKenzie
+ * @date January 22, 2025
+ * @filename Platformer.java
+ * @description Our final project for ICS4U Computer Science.
  */
 
 public class Main {
@@ -41,22 +29,52 @@ public class Main {
     public static Player player;
 
     // Graphics //
+    /**
+     * The monitor which the player is using.
+     */
     public static GraphicsDevice display;
+    /**
+     * The Parent gui frame which the game takes place on.
+     */
     public static CoreFrame coreFrame;
+    /**
+     * The graphics object which is used to paint in PaintComponent for the camera
+     */
     public static Graphics graphics;
-
+    /**
+     * The most to the left a player can go
+     */
     public static double minX = -1000;
+    /**
+     * The most to the right a player can go
+     */
     public static double maxX = 1000;
+    /**
+     * The most to up a player can go
+     */
     public static double minY = -1000;
+    /**
+     * The most down a player can go
+     */
     public static double maxY = 1000;
-
+    /**
+     * Spawnpoint for the player
+     */
     public static Point2D spawn = new Point2D.Double();
-
+    /**
+     * Platform which progresses to the next level
+     */
     private static Platform endPlatform;
+    /**
+     * Current Level Index
+     */
     private static int currentLevel = 0;
-
-    private static Point2D offset;
-
+    /**
+     * The Main Method of the program, is the first thing that runs.
+     * @param args
+     * @throws InterruptedException
+     * For thread sleeping
+     */
     public static void main(String[] args) throws InterruptedException {
 
         init();
@@ -67,6 +85,9 @@ public class Main {
         }
     }
 
+    /**
+     * First thing that's run in the main method
+     */
     public static void init() {
         // Init Graphics //
         display = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -78,37 +99,16 @@ public class Main {
         player = new Player();
 
         loadLevel(currentLevel);
-
-        // Level.Load("Tutorial");
-
-        // levelOne();
-        // GuiService.drawLevelOne(graphics);
-
-        // Init Platforms //
-        // Platform platform1 = new Platform(-250, 400, 500, 12); // x, y, width, height
-        // platform1.applyPreset(new
-        // EntityConstants.PlatformConstants.RubberPlatform());
-
-        // Platform platform2 = new Platform(-500, 600, 500, 12);
-        // platform2.applyPreset(new
-        // EntityConstants.PlatformConstants.RubberPlatform());
-
-        // Platform platform3 = new Platform(-750, 800, 500, 12);
-
-        // Platform ground = new Platform(-1500, 1000, 3000, 200);
-
-        // Wall wall1 = new Wall(-900, 500, 20, 1000);
-
-        // wall1.setBounce(5);
-        // Wall wall2 = new Wall(800, 500, 100, 500);
     }
 
+    /**
+     * A method that's periodically run in the main method
+     */
     public static void periodic() {
         Point2D playerPosition = player.getPosition();
         camera.setPosition(new Point2D.Double(
                 playerPosition.getX() - coreFrame.getWidth() / 2,
                 playerPosition.getY() - coreFrame.getHeight() / 2));
-        offset = camera.getOffset();
         player.periodic();
         applyBoundaries();
         Entity.updateAll();
@@ -118,6 +118,9 @@ public class Main {
         }
     }
 
+    /**
+     * 
+     */
     public static void reset() {
         Platform.platformList.clear();
         Entity.entityList.clear();
@@ -131,9 +134,13 @@ public class Main {
      * Set the player boundary
      * 
      * @param minX
+     * The most a player can move to the left
      * @param maxX
+     * The most a player can move to the right
      * @param minY
+     * The most a player can move up
      * @param maxY
+     * The most a player can move down
      */
     public static void setBoundaries(double minX, double maxX, double minY, double maxY) {
         Main.maxX = maxX;
@@ -142,6 +149,9 @@ public class Main {
         Main.minY = minY;
     }
 
+    /**
+     * Updates the boundaries, bringing the player back if outside.
+     */
     public static void applyBoundaries() {
         Point2D playerPosition = player.getPosition();
         if (playerPosition.getY() > maxY) {
@@ -162,10 +172,22 @@ public class Main {
         }
     }
 
+    /**
+     * @param x
+     * X-Axis Position for player spawning point.
+     * @param y
+     * Y-Axis Position for player spawning point.
+     */
     public static void setPlayerSpawn(double x, double y) {
         spawn = new Point2D.Double(x, y);
     }
 
+
+    /**
+     * Loads a level
+     * @param level
+     * The Level Index
+     */
     public static void loadLevel(int level) {
         switch (level) {
             case 0:
@@ -186,7 +208,10 @@ public class Main {
         }
     }
 
-    public static void mainScreen() {
+    /**
+     * Main Screen, first screen seen in the game.
+     */
+    private static void mainScreen() {
         camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/purpleTitle.png")); // src/platformer/Gui/Images/blueSkyBackground.png
         setPlayerSpawn(50, -150);
         setBoundaries(-1000, 1000, -1000, 1000);
@@ -198,6 +223,10 @@ public class Main {
         endPlatform.applyPreset(PlatformConstants.EndPlatform);
     }
 
+
+    /**
+     * Level One
+     */
     private static void levelOne() {
 
         camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/blueSkyBackground.png"));
@@ -214,6 +243,9 @@ public class Main {
         endPlatform.applyPreset(PlatformConstants.EndPlatform);
     }
 
+    /**
+     * Level Two
+     */
     private static void levelTwo() {
         camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/redSkyBackground.png"));
 
@@ -231,6 +263,9 @@ public class Main {
         endPlatform.applyPreset(PlatformConstants.EndPlatform);
     }
 
+    /**
+     * Level Three
+     */
     private static void levelThree() {
         camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/purpleSkyBackground.png"));
         setBoundaries(0, 5000, -1000, 1000);
@@ -246,6 +281,9 @@ public class Main {
         endPlatform.applyPreset(PlatformConstants.EndPlatform);
     }
 
+    /**
+     * Last Screen, declares the player a winner!
+     */
     private static void winScreen() {
         camera.setBackgroundImage(new ImageIcon("src/platformer/Gui/Images/greenWin.png"));
         setPlayerSpawn(0, -200);
@@ -266,5 +304,4 @@ public class Main {
 
         endPlatform = null;
     }
-
 }

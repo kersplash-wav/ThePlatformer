@@ -14,20 +14,39 @@ import static java.awt.event.KeyEvent.*;
 // Main Class //
 public class InputService implements KeyListener {
     // Data //
+    /**
+     * A dictionary that says whether a key is down or not
+     */
     private final Dictionary<Integer, Boolean> KeysDown = new Hashtable<>();
     private static InputService Service;
     // Constructor //
-    static {
+    /**
+     * A static constructor which initializes the singleton InputService
+     */
+    static 
+    {
         Service = new InputService();
         Main.coreFrame.addKeyListener(Service);
     }
 
     // Base Methods //
+    /**
+     * Getter method for the InputService singleton
+     * @return
+     * The InputService
+     */
     public static InputService GetInputService() {
         return Service;
     }
 
     // Action Methods //
+    /**
+     * Method for checking whether a certain key is down
+     * @param keyCode
+     * The keycode of the key which will be checked
+     * @return
+     * If the key is down
+     */
     public boolean IsKeyDown(int keyCode) {
         try {
             return KeysDown.get(keyCode);

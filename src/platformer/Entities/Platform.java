@@ -12,9 +12,18 @@ import platformer.Entities.EntityConstants.PlatformConstants.PresetPlatform;
 // Class //
 public class Platform extends Entity {
     // Public Data //
+    /**
+     * A list of all the platforms
+     */
     public static final ArrayList<Platform> platformList = new ArrayList<Platform>();
     // Private Data //
+    /**
+     * The friction of this platform
+     */
     private double friction = PlatformConstants.StandardPlatform.friction;
+    /**
+     * The bounciness of this platform
+     */
     private double bounce = PlatformConstants.StandardPlatform.bounce;
     // Constructor //
 
@@ -101,6 +110,11 @@ public class Platform extends Entity {
     public void update() {
     }
 
+    /**
+     * Applies material for the platform
+     * @param preset
+     * The material which the platform will be
+     */
     public void applyPreset(PresetPlatform preset){
         this.setSize(preset.width, preset.height);
         this.setBounce(preset.bounce);
