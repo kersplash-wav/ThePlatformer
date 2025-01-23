@@ -23,7 +23,7 @@ public class InputService implements KeyListener {
     /**
      * A static constructor which initializes the singleton InputService
      */
-    static 
+    static
     {
         Service = new InputService();
         Main.coreFrame.addKeyListener(Service);
@@ -73,8 +73,6 @@ public class InputService implements KeyListener {
         switch (keyCode) {
             case VK_ESCAPE:
                 System.exit(0);
-            default:
-                break;
         }
     }
 

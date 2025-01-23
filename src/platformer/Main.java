@@ -17,7 +17,7 @@ import platformer.Gui.CoreFrame;
 
 /**
  * @author Nicholas Ranin, Joachim Michalef, Robert Rodriguez, Isaac MacKenzie
- * @date January 22, 2025
+ * @date January 23, 2025
  * @filename Platformer.java
  * @description Our final project for ICS4U Computer Science.
  */
@@ -34,11 +34,11 @@ public class Main {
      */
     public static GraphicsDevice display;
     /**
-     * The Parent gui frame which the game takes place on.
+     * The Parent GUI frame which the game takes place on.
      */
     public static CoreFrame coreFrame;
     /**
-     * The graphics object which is used to paint in PaintComponent for the camera
+     * The graphics object which is used to paint in paintComponent for the camera
      */
     public static Graphics graphics;
     /**
@@ -119,7 +119,7 @@ public class Main {
     }
 
     /**
-     * 
+     * resets all entities between levels
      */
     public static void reset() {
         Platform.platformList.clear();

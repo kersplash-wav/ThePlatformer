@@ -7,9 +7,6 @@ import platformer.Entities.Character;
 import java.awt.geom.Point2D;
 import java.awt.Graphics;
 import static java.awt.event.KeyEvent.*;
-import java.awt.Point;
-
-import java.awt.Color;
 
 public class Player {
     // Instance Data //
