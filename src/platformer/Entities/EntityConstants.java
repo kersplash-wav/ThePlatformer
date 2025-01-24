@@ -21,10 +21,10 @@ public class EntityConstants {
         public static final double maxDownwardVelocity = 10;
         public static final double maxLeftwardVelocity = -10;
         public static final double maxRightwardVelocity = 10;
-        public static final double upwardMovementVelocity = -1;
-        public static final double downwardMovementVelocity = 1;
-        public static final double rightWardMovementVelocity = 1;
-        public static final double leftWardMovementVelocity = -1;
+        public static final double upwardMovementVelocity = -10;
+        public static final double downwardMovementVelocity = 5;
+        public static final double rightWardMovementVelocity = 0.05;
+        public static final double leftWardMovementVelocity = -0.05;
     }
 
     // Settings for all platform types

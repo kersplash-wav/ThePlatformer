@@ -73,6 +73,9 @@ public class InputService implements KeyListener {
         switch (keyCode) {
             case VK_ESCAPE:
                 System.exit(0);
+                break;
+                case VK_BACK_SPACE:
+                Main.loadLevel(0);
         }
     }
 

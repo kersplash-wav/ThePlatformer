@@ -189,6 +189,7 @@ public class Main {
      * The Level Index
      */
     public static void loadLevel(int level) {
+        currentLevel = level;
         switch (level) {
             case 0:
                 mainScreen();

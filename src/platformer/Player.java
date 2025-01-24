@@ -70,18 +70,18 @@ public class Player {
         double x = 0;
         double y = 0;
         // Checks //
-        if (input.IsKeyDown(VK_W))
+        if (input.IsKeyDown(VK_W)||input.IsKeyDown(VK_UP))
             if (character.isGrounded()||(character.isLeftWalled()&&character.getLeftWall().getFriction()<-0.1)||(character.isRightWalled()&&character.getRightWall().getFriction()<-0.1))
-                y -= 5;
-        if (input.IsKeyDown(VK_S))
+                y += EntityConstants.CharacterConstants.upwardMovementVelocity;
+        if (input.IsKeyDown(VK_S)||input.IsKeyDown(VK_DOWN))
             if (!character.isGrounded())
-                y += 1;
-        if (input.IsKeyDown(VK_A))
+                y += EntityConstants.CharacterConstants.downwardMovementVelocity;
+        if (input.IsKeyDown(VK_A)||input.IsKeyDown(VK_LEFT))
             if (!character.isLeftWalled())
-                x -= 0.1;
-        if (input.IsKeyDown(VK_D))
+                x += EntityConstants.CharacterConstants.leftWardMovementVelocity;
+        if (input.IsKeyDown(VK_D)||input.IsKeyDown(VK_RIGHT))
             if (!character.isRightWalled())
-                x += 0.1;
+                x += EntityConstants.CharacterConstants.rightWardMovementVelocity;
 
         character.setMovementAxis(new Point2D.Double(x, y));
     }
